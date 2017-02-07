@@ -1,0 +1,211 @@
+# set ssl_starttls = yes
+# set ssl_force_tls = yes
+
+# set edit_headers = yes
+# set autoedit = yes
+
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+#set certificate_file = "~/.mutt/certificates"
+
+set alias_file = '~/.mutt/mutt_aliases.csv'
+source $alias_file
+
+folder-hook 'gmail/' 'source ~/.mutt/account.gmail'
+folder-hook 'webmail/' 'source ~/.mutt/account.webmail'
+#macro index <f3> '<change-folder>imaps://mail.auth.gr<enter>'
+#macro index <f2> '<change-folder>~/.mail/gmail/.Inbox<enter>'
+
+set move = no
+#set imap_keepalive = 900
+
+color hdrdefault cyan default
+color attachment yellow default
+
+color header brightyellow default "From: "
+color header brightyellow default "Subject: "
+color header brightyellow default "Date: "
+
+color quoted green default
+color quoted1 cyan default
+color quoted2 green default
+color quoted3 cyan default
+
+# error messages
+color error     red             default
+# message  informational messages
+color message   white           default
+# indicator for the "current message"
+color indicator white           red
+# status lines in the folder index sed for the mini-help line
+color status    white           blue
+# the "tree" display of threads within the folder index
+color tree      red             default
+# search matches found with search within the internal pager
+color search    white           blue
+# The markers indicate a wrapped line hen showing messages with looong lines
+color markers   red             default
+
+color index     yellow default  '~O'
+color index     yellow default  '~N'
+# Flagged Messages are important!
+color index     brightred       default '~F'
+# Deleted Mails - use dark color as these are already "dealt with"
+color index     blue default    '~D'
+
+
+set sort=threads
+set sort_aux=last-date-received
+
+set editor='$EDITOR'
+
+# set folder=~/.mail/gmail/
+# set spoolfile=+.Inbox
+
+set mbox_type=Maildir
+set folder=$HOME/.mail/gmail
+set spoolfile=+.Inbox
+set header_cache=~/.mutt/cache
+
+# bind index,pager ^? previous-line
+
+set mailcap_path    = ~/.mutt/mailcap
+
+auto_view text/html
+alternative_order text/plain text/html
+#toggle alternative order of reading (prefer html over text)
+
+macro pager ,@aot= "\
+<enter-command> unalternative_order *; \
+alternative_order text/enriched text/plain text/html text application/postscript image/*; \
+macro pager A ,@aoh= 'prefer html over text'<enter>\
+<exit><display-message>"
+#
+macro pager ,@aoh= "\
+<enter-command> unalternative_order *; \
+alternative_order text/enriched text/html text/plain text application/postscript image/*; \
+macro pager A ,@aot= 'prefer text over html'<enter>\
+<exit><display-message>"
+#
+macro pager A ,@aoh= "prefer html over text"
+
+# View html in firefox
+
+macro attach 'V' "<pipe-entry>cat >~/.mutt/cache/mail.html && firefox ~/.mutt/cache/mail.html && rm ~/.mutt/cache/mail.html<enter>"
+
+set pager_index_lines=6
+
+mailboxes "+## gmail ######################"\
+	  +.Inbox\
+	  +.Fotomada\
+	  +.Weddings\
+	  +.arch\
+	  +.emacs\
+	  +.TeX_live\
+	  +.Diktyosi_thess\
+	  +.AutoCsd\
+	  +.sent\
+	  +.drafts\
+	  +.trash\
+	  "+## webmail\ ####################"\
+	  ~/.mail/webmail/Inbox\
+	  ~/.mail/webmail/sent-mail\
+	  ~/.mail/webmail/Drafts
+
+set fast_reply=yes
+set include=yes
+
+
+#Show context lines when going to next page:
+set pager_context=3
+
+#Stop at the end instead of displaying next mail:
+set pager_stop=yes
+
+# #################### New Sidebar for Mutt 1.6.2 AND for NeoMutt
+
+
+# # Should the Sidebar be shown?
+set sidebar_visible = yes
+
+# # How wide should the Sidebar be in screen columns?
+# # Note: Some characters, e.g. Chinese, take up two columns each.
+set sidebar_width = 32
+
+# # Should the mailbox paths be abbreviated?
+set sidebar_short_path = yes
+
+# # When abbreviating mailbox path names, use any of these characters as path
+# # separators.  Only the part after the last separators will be shown.
+# # For file folders '/' is good.  For IMAP folders, often '.' is useful.
+set sidebar_delim_chars = '/.'
+
+# # If the mailbox path is abbreviated, should it be indented?
+set sidebar_folder_indent = no
+
+# # Indent mailbox paths with this string.
+set sidebar_indent_string = ' '
+
+# # Make the Sidebar only display mailboxes that contain new, or flagged,
+# # mail.
+set sidebar_new_mail_only = no
+
+# # Any mailboxes that are whitelisted will always be visible, even if the
+# # sidebar_new_mail_only option is enabled.
+# #sidebar_whitelist '/home/user/mailbox1'
+# #sidebar_whitelist '/home/user/mailbox2'
+
+# # When searching for mailboxes containing new mail, should the search wrap
+# # around when it reaches the end of the list?
+set sidebar_next_new_wrap = yes
+
+# # The character to use as the divider between the Sidebar and the other Mutt
+# # panels.
+# # Note: Only the first character of this string is used.
+set sidebar_divider_char = '|'
+
+color sidebar_divider   red default
+color sidebar_indicator white red
+
+# # Display the Sidebar mailboxes using this format string.
+set sidebar_format = '%B %?N?[%N]?%* %S'
+
+set mail_check_stats
+#set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
+                     
+# # --------------------------------------------------------------------------
+# # FUNCTIONS - shown with an example mapping
+# # --------------------------------------------------------------------------
+
+# # Move the highlight to the previous mailbox
+bind index \Ca sidebar-prev
+bind pager \Ca sidebar-prev
+
+# # Move the highlight to the next mailbox
+bind index \Cs sidebar-next
+bind pager \Cs sidebar-next
+
+# # Open the highlighted mailbox
+bind index,pager \CO sidebar-open
+
+# bind index <space> sidebar-open
+
+# # Move the highlight to the previous page
+# # This is useful if you have a LOT of mailboxes.
+# bind index,pager <F3> sidebar-page-up
+
+# # Move the highlight to the next page
+# # This is useful if you have a LOT of mailboxes.
+# bind index,pager <F4> sidebar-page-down
+
+# # Move the highlight to the previous mailbox containing new, or flagged,
+# # mail.
+bind index,pager <F5> sidebar-prev-new
+
+# # Move the highlight to the next mailbox containing new, or flagged, mail.
+bind index,pager <F6> sidebar-next-new
+
+# # Toggle the visibility of the Sidebar.
+bind index,pager b sidebar-toggle-visible
+
+# ####################

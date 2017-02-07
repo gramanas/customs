@@ -1,0 +1,5 @@
+set show-hidden true
+set statusbar-basename true
+set statusbar-home-tilde true
+set guioptions ""
+set show-scrollbars false

@@ -1,0 +1,808 @@
+* CONFIGURATION 
+  TODO: Greek as default other input method
+** General
+*** Trivial Stuff
+#+BEGIN_SRC emacs-lisp
+  (semantic-mode 1)
+  (column-number-mode t)
+  (global-linum-mode -1)
+  (line-number-mode t)
+  (scroll-bar-mode -1)
+  (show-paren-mode t)
+  (tool-bar-mode -1)
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-sanityinc-tomorrow-20160916.1758")
+  (load-theme 'sanityinc-tomorrow-bright t)
+#+END_SRC
+*** Packages
+**** Init
+#+BEGIN_SRC emacs-lisp
+  (require 'cl)
+  (require 'package)
+  (package-initialize)
+  (setq package-archives
+        '(("gnu" . "http://elpa.gnu.org/packages/")
+          ("org" . "http://orgmode.org/elpa/")
+          ("melpa" . "https://melpa.org/packages/")
+          ("melpa-stable" . "https://stable.melpa.org/packages/")))
+#+END_SRC
+**** default-packages
+Tangle is set to NO since I dont want to check every time I start emacs or emacsdaemon.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (let* ((packages
+          '(async              
+            avy
+            magit                
+            dash               
+            epl                
+            helm               
+            helm-core          
+            ivy                
+            math-symbol-lists  
+            multiple-cursors   
+            packed             
+            pkg-info           
+            popup              
+            s                  
+            yasnippet          
+            ace-jump-mode      
+            ace-jump-zap       
+            ace-mc             
+            ace-window         
+            auctex             
+            change-inner
+            linum-relative      
+            color-theme-sanityinc-tomorrow 
+            company            
+            company-math       
+            darktooth-theme    
+            embrace            
+            expand-region      
+            fill-column-indicator 
+            flycheck           
+            helm-company       
+            helm-flycheck      
+            helm-projectile    
+            helm-swoop         
+            jump-char          
+            monokai-theme      
+            powerline          
+            projectile
+            swiper))
+         ;; Remove all packages already installed
+         (packages (remove-if 'package-installed-p packages)))
+    (when packages
+    (ignore-errors (package-refresh-contents)
+                   (mapcar 'package-install packages))))
+#+END_SRC
+*** Looks & Feels
+**** fonts
+#+BEGIN_SRC emacs-lisp
+  (setq hrs/default-font "Source Code Pro")
+  (setq hrs/default-font-size 10)
+  (setq hrs/current-font-size hrs/default-font-size)
+
+  (setq hrs/font-change-increment 1.01)
+
+  (defun hrs/set-font-size ()
+    "Set the font to `hrs/default-font' at `hrs/current-font-size'."
+    (set-frame-font
+     (concat hrs/default-font "-" (number-to-string hrs/current-font-size))))
+
+  (defun hrs/reset-font-size ()
+    "Change font size back to `hrs/default-font-size'."
+    (interactive)
+    (setq hrs/current-font-size hrs/default-font-size)
+    (hrs/set-font-size))
+
+  (defun hrs/increase-font-size ()
+    "Increase current font size by a factor of `hrs/font-change-increment'."
+    (interactive)
+    (setq hrs/current-font-size
+          (ceiling (* hrs/current-font-size hrs/font-change-increment)))
+    (hrs/set-font-size))
+
+  (defun hrs/decrease-font-size ()
+    "Decrease current font size by a factor of `hrs/font-change-increment', down to a minimum size of 1."
+    (interactive)
+    (setq hrs/current-font-size
+          (max 1
+               (floor (/ hrs/current-font-size hrs/font-change-increment))))
+    (hrs/set-font-size))
+
+  (define-key global-map (kbd "C-M-)") 'hrs/reset-font-size)
+  (define-key global-map (kbd "C-M-+") 'hrs/increase-font-size)
+  (define-key global-map (kbd "C-M-_") 'hrs/decrease-font-size)
+#+END_SRC
+**** Highlight current line
+#+BEGIN_SRC emacs-lisp
+  (global-hl-line-mode t)
+#+END_SRC
+**** Miscs
+#+BEGIN_SRC emacs-lisp
+  (setq auto-revert-interval 1            ; Refresh buffers fast
+  ;too soon        
+  ;custom-file (make-temp-file "")   ; Discard customization's
+        echo-keystrokes 0.1               ; Show keystrokes asap
+        inhibit-startup-message t         ; No splash screen please
+        initial-scratch-message ";; Welcome aboard\n\n"       ; Clean scratch buffer
+        recentf-max-saved-items 100       ; Show more recent files
+        ring-bell-function 'ignore        ; Quiet
+        sentence-end-double-space nil    ; No double space
+        show-paren-mode t)
+
+  (setq-default fill-column 79                    ; Maximum line width
+                truncate-lines t                  ; Don't fold lines
+                indent-tabs-mode nil)              ; Use spaces instead of tabs
+                ;split-width-threshold 40         ; Split verticly by default
+                ;auto-fill-function 'do-auto-fill) ; Auto-fill-mode everywhere
+#+END_SRC
+**** transparent background on terminal
+#+BEGIN_SRC emacs-lisp
+;; "no clue" how it works
+(defun on-frame-open (frame)
+  (if (not (display-graphic-p frame))
+      (set-face-background 'default "unspecified-bg" frame)))
+(on-frame-open (selected-frame))
+(add-hook 'after-make-frame-functions 'on-frame-open)
+
+(defun on-after-init ()
+  (unless (display-graphic-p (selected-frame))
+    (set-face-background 'default "unspecified-bg" (selected-frame))))
+
+(add-hook 'window-setup-hook 'on-after-init)
+#+END_SRC
+**** python indent
+#+BEGIN_SRC emacs-lisp
+  (setq python-indent-offset 2)
+#+END_SRC
+*** Utils
+**** resize windows
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "S-C-<down>") 'shrink-window)
+  (global-set-key (kbd "S-C-<up>") 'enlarge-window)
+#+END_SRC
+**** save macro
+#+BEGIN_SRC emacs-lisp
+  (defun save-macro (name)
+  "save a macro. Take a name as argument
+   and save the last defined macro under
+   this name at the end of your .emacs"
+   (interactive "SName of the macro :")  ; ask for the name of the macro
+   (kmacro-name-last-macro name)         ; use this name for the macro
+   (find-file "~/.emacs.d/orgconf.org")            ; open ~/.emacs or other user init file
+   (goto-char (point-max))               ; go to the end of the .emacs
+   (newline)                             ; insert a newline
+   (insert-kbd-macro name)               ; copy the macro
+   (newline)                             ; insert a newline
+   (switch-to-buffer nil))               ; return to the initial buffer
+#+END_SRC
+**** linum
+#+BEGIN_SRC emacs-lisp
+;; '(global-linum-mode t)
+#+END_SRC
+**** kill-word
+#+BEGIN_SRC emacs-lisp
+  (fset 'Kill\ word
+        (lambda (&optional arg) 
+          "Keyboard macro." 
+        (interactive "p") 
+        (kmacro-exec-ring-item 
+         (quote ([134217848 101 114 47 109 97 114 107 45 119 111 100 backspace 114 100 return delete] 0 "%d")) arg)))
+
+  (global-set-key (kbd "C-c w") 'Kill\ word)
+#+END_SRC
+**** view buffer name
+#+BEGIN_SRC emacs-lisp
+(defun hrs/view-buffer-name ()
+  "Display the filename of the current buffer."
+  (interactive)
+  (message (buffer-file-name)))
+
+(global-set-key (kbd "C-c v") 'hrs/view-buffer-name)
+#+END_SRC
+**** kill buffer -no questions asked-
+#+BEGIN_SRC emacs-lisp
+(defun hrs/kill-current-buffer ()
+  "Kill the current buffer without prompting."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+(global-set-key (kbd "C-x k") 'hrs/kill-current-buffer)
+#+END_SRC
+**** sudoedit inside emacs
+#+BEGIN_SRC emacs-lisp
+(defun hrs/find-file-as-sudo ()
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (when file-name
+      (find-alternate-file (concat "/sudo::" file-name)))))
+
+(global-set-key (kbd "C-c f s") 'hrs/find-file-as-sudo)
+#+END_SRC
+**** replace 'yes or no' with 'y or n'
+#+BEGIN_SRC emacs-lisp
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+**** Split n Switch
+#+BEGIN_SRC emacs-lisp
+  ;; switch when split
+  (defun hrs/split-window-below-and-switch ()
+    "Split the window horizontally, then switch to the new pane."
+    (interactive)
+    (split-window-below)
+    (other-window 1))
+
+  (defun hrs/split-window-right-and-switch ()
+    "Split the window vertically, then switch to the new pane."
+    (interactive)
+    (split-window-right)
+      (other-window 1))
+
+  (global-set-key (kbd "C-x 2") 'hrs/split-window-below-and-switch)
+  (global-set-key (kbd "C-x 3") 'hrs/split-window-right-and-switch)
+#+END_SRC
+**** delete spaces around cursors
+#+BEGIN_SRC emacs-lisp
+  (defun cycle-spacing-delete-newlines ()
+    "Removes whitespace before and after the point."
+    (interactive)
+    (if (version< emacs-version "24.4")
+        (just-one-space -1)
+      (cycle-spacing -1)))
+
+  (global-set-key (kbd "C-c j") 'cycle-spacing-delete-newlines)
+#+END_SRC
+**** jump to symbol like this
+#+BEGIN_SRC emacs-lisp
+  (defun jump-to-symbol-internal (&optional backwardp)
+    "Jumps to the next symbol near the point if such a symbol
+  exists. If BACKWARDP is non-nil it jumps backward."
+    (let* ((point (point))
+           (bounds (find-tag-default-bounds))
+           (beg (car bounds)) (end (cdr bounds))
+           (str (isearch-symbol-regexp (find-tag-default)))
+           (search (if backwardp 'search-backward-regexp
+                     'search-forward-regexp)))
+      (goto-char (if backwardp beg end))
+      (funcall search str nil t)
+      (cond ((<= beg (point) end) (goto-char point))
+            (backwardp (forward-char (- point beg)))
+            (t  (backward-char (- end point))))))
+
+  (defun jump-to-previous-like-this ()
+    "Jumps to the previous occurrence of the symbol at point."
+    (interactive)
+    (jump-to-symbol-internal t))
+
+  (defun jump-to-next-like-this ()
+    "Jumps to the next occurrence of the symbol at point."
+    (interactive)
+    (jump-to-symbol-internal))
+
+  (global-set-key (kbd "M-p") 'jump-to-previous-like-this)
+  (global-set-key (kbd "M-n") 'jump-to-next-like-this)
+  (global-set-key (kbd "M-.") 'jump-to-next-like-this)
+  (global-set-key (kbd "M-,") 'jump-to-previous-like-this)
+#+END_SRC
+**** duplicate thing
+#+BEGIN_SRC emacs-lisp
+  (defun duplicate-thing (comment)
+    "Duplicates the current line, or the region if active. If an argument is
+  given, the duplicated region will be commented out."
+    (interactive "P")
+    (save-excursion
+      (let ((start (if (region-active-p) (region-beginning) (point-at-bol)))
+            (end   (if (region-active-p) (region-end) (point-at-eol))))
+        (goto-char end)
+        (unless (region-active-p)
+          (newline))
+        (insert (buffer-substring start end))
+        (when comment (comment-region start end)))))
+
+  (global-set-key (kbd "C-c d")   'duplicate-thing)
+#+END_SRC
+**** kbd to kill daemon
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c x")
+      (lambda ()
+      (interactive)
+      (save-buffers-kill-emacs t)))
+#+END_SRC
+*** TeX
+**** Tex Engine to use greek
+#+BEGIN_SRC emacs-lisp
+  (setq-default TeX-engine 'xetex)
+#+END_SRC
+**** AucTeX preview size 
+#+BEGIN_SRC emacs-lisp
+  (set-default 'preview-scale-function 1)
+#+END_SRC
+**** AucTeX master file
+#+BEGIN_SRC emacs-lisp
+  (setq-default TeX-master nil)
+#+END_SRC
+**** Tex-view program selection
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   '(TeX-view-program-selection
+     (quote
+      (((output-dvi has-no-display-manager)
+        "dvi2tty")
+       ((output-dvi style-pstricks)
+        "dvips and gv")
+       (output-dvi "xdvi")
+       (output-pdf "Zathura")
+       (output-html "xdg-open")))))
+#+END_SRC
+
+*** file to mode asociation
+**** unix-conf-mode for systed units
+#+BEGIN_SRC emacs-lisp
+ (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.timer\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.target\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.mount\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.slice\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.socket\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.path\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.netdev\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.network\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.link\\'" . conf-unix-mode))
+ (add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
+#+END_SRC
+**** conf-mode for files ending with rc
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("/[^/]*rc" . conf-mode) t)
+#+END_SRC
+**** mutt support
+#+BEGIN_SRC emacs-lisp
+  ;; mail-mode when on mutt, probably will change to notmuch-message-mode
+  (setq auto-mode-alist (append '(("/tmp/mutt.*" . mail-mode)) auto-mode-alist))
+#+END_SRC
+*** registrers
+#+BEGIN_SRC emacs-lisp
+  (set-register ?t '(file . "~/todo.org"))
+  (set-register ?s '(file . "~/.mbsyncrc"))
+  (set-register ?e '(file . "~/customs/emacs/orgconf.org"))
+  (set-register ?3 '(file . "~/customs/i3/config"))
+  (set-register ?b '(file . "~/customs/.bashrc"))
+  (set-register ?c '(file . "~/customs/"))
+#+END_SRC
+*** Custom file
+**** Sane thing to do (disable it)
+#+BEGIN_SRC emacs-lisp
+  custom-file (make-temp-file "")
+#+END_SRC
+**** If i want to have it
+#+BEGIN_SRC emacs-lisp :tangle no
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
+#+END_SRC
+*** Autosaves
+#+BEGIN_SRC emacs-lisp
+  (defvar emacs-autosave-directory
+    (concat user-emacs-directory "autosaves/")
+    "This variable dictates where to put auto saves. It is set to a
+    directory called autosaves located wherever your .emacs.d/ is
+    located.")
+
+  ;; Sets all files to be backed up and auto saved in a single directory.
+  (setq backup-directory-alist
+        `((".*" . ,emacs-autosave-directory))
+        auto-save-file-name-transforms
+        `((".*" ,emacs-autosave-directory t)))    
+#+END_SRC
+*** dired something
+#+BEGIN_SRC emacs-lisp
+  (put 'dired-find-alternate-file 'disabled nil)
+#+END_SRC
+** Package Configurations
+*** Org-Mode
+**** Display Settings
+***** Pretty colors for code blocks
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC
+**** Tabs act naturally in code snipets
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+**** todo keywords
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "DONE(d)")))
+#+END_SRC
+**** todo faces
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keyword-faces
+        '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
+          ("WAITING" . "yellow")))
+#+END_SRC
+*** smartparens
+**** Initialize
+#+BEGIN_SRC emacs-lisp
+  (require 'smartparens-config)
+  (add-hook 'js-mode-hook #'smartparens-mode)
+  (add-hook 'python-mode-hook #'smartparens-mode)
+  (add-hook 'tex-mode-hook #'smartparens-mode)
+  (add-hook 'c-mode-hook #'smartparens-mode)
+  (add-hook 'c++-mode-hook #'smartparens-mode)
+#+END_SRC
+*** expand region
+#+BEGIN_SRC emacs-lisp
+(require 'expand-region)
+
+(global-set-key (kbd "C->")  'er/expand-region)
+(global-set-key (kbd "C-<")  'er/contract-region)
+#+END_SRC
+*** change inside
+#+BEGIN_SRC emacs-lisp
+  (require 'change-inner)
+  (global-set-key (kbd "M-i") 'change-inner)
+  (global-set-key (kbd "M-o") 'change-outer)
+#+END_SRC
+*** Auto Complete
+**** Company
+***** Initialize
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/elpa/company-20160829.1206")
+  (require 'company)
+  (add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+***** Aggresive auto complete
+#+BEGIN_SRC emacs-lisp 
+(setq company-idle-delay 0
+      company-echo-delay 0
+      company-dabbrev-downcase nil
+      company-minimum-prefix-length 2
+      company-selection-wrap-around t
+      company-transformers '(company-sort-by-occurrence
+                             company-sort-by-backend-importance))
+#+END_SRC
+***** Keybindings
+****** Manual Begin
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-;") 'company-manual-begin)
+#+END_SRC
+****** Next-Prev
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous))
+#+END_SRC
+***** helm interface
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load 'company
+    '(progn
+       (define-key company-mode-map (kbd "C-:") 'helm-company)
+       (define-key company-active-map (kbd "C-s") 'helm-company)))
+#+END_SRC
+***** Style
+#+BEGIN_SRC emacs-lisp
+  (setq company-tooltip-align-annotations t)
+
+  (custom-set-faces
+   '(company-preview
+     ((t (:foreground "darkgray" :underline t))))
+   '(company-preview-common
+     ((t (:inherit company-preview))))
+   '(company-tooltip
+     ((t (:background "gray4" :foreground "gray85"))))
+   '(company-tooltip-selection 
+     ((t (:background "gray15" :foreground "gray100"))))
+   '(company-tooltip-annotation
+     ((t (:background "gray4" :foreground "SandyBrown"))))   
+   '(company-tooltip-annotation-selection
+     ((t (:background "gray15" :foreground "SandyBrown"))))
+   '(company-tooltip-common
+     ((t (:background "gray4" :foreground "gray42"))))
+   '(company-tooltip-common-selection
+     ((t (:background "gray15" :foreground "gray69")))))
+#+END_SRC
+***** python
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "company"
+    '(add-to-list 'company-backends 'company-anaconda))
+
+  (add-hook 'python-mode-hook 'anaconda-mode)
+
+  (eval-after-load "company"
+    '(add-to-list 'company-backends '(company-anaconda :with company-capf)))
+#+END_SRC
+***** Tab cycles
+#+BEGIN_SRC emacs-lisp :tangle no
+  (eval-after-load 'company
+    '(progn
+       (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+       (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
+  (eval-after-load 'company
+    '(progn
+       (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
+       (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
+#+END_SRC
+***** wow
+#+BEGIN_SRC emacs-lisp :tangle no
+  (defvar-local company-simple-complete--previous-prefix nil)
+  (defvar-local company-simple-complete--before-complete-point nil)
+
+  (defun company-simple-complete-frontend (command)
+    (when (or (eq command 'show)
+              (and (eq command 'update)
+                   (not (equal company-prefix company-simple-complete--previous-prefix))))
+      (setq company-selection -1
+            company-simple-complete--previous-prefix company-prefix
+            company-simple-complete--before-complete-point nil)))
+
+  (defun company-simple-complete-next (&optional arg)
+    (interactive "p")
+    (company-select-next arg)
+    (company-simple-complete//complete-selection-and-stay))
+
+  (defun company-simple-complete-previous (&optional arg)
+    (interactive "p")
+    (company-select-previous arg)
+    (company-simple-complete//complete-selection-and-stay))
+
+  (defun company-simple-complete//complete-selection-and-stay ()
+    (if (cdr company-candidates)
+        (when (company-manual-begin)
+          (when company-simple-complete--before-complete-point
+            (delete-region company-simple-complete--before-complete-point (point)))
+          (setq company-simple-complete--before-complete-point (point))
+          (unless (eq company-selection -1)
+            (company--insert-candidate (nth company-selection company-candidates)))
+          (company-call-frontends 'update)
+          (company-call-frontends 'post-command))
+      (company-complete-selection)))
+
+  (defun company-simple-complete-selection-and-quit (&optional arg)
+    (interactive "p")
+    (when (company-manual-begin)
+      (when company-simple-complete--before-complete-point
+        (delete-region company-simple-complete--before-complete-point (point)))
+      (setq company-simple-complete--before-complete-point (point))
+      (unless (eq company-selection -1)
+        (company-complete-selection))))
+
+  (defun company-simple-complete-number-and-quit (n)
+    (interactive "p")
+    (if (cdr company-candidates)
+        (when (company-manual-begin)
+          (when company-simple-complete--before-complete-point
+            (delete-region company-simple-complete--before-complete-point (point)))
+          (setq company-simple-complete--before-complete-point (point))
+          (company-complete-number n)
+          (unless (eq company-selection -1)
+            (company-complete-selection)))))
+
+  (defadvice company-set-selection (around allow-no-selection (selection &optional force-update))
+    "Allow selection to be -1"
+    (setq selection
+          ;; TODO deal w/ wrap-around
+          (if company-selection-wrap-around
+              (mod selection company-candidates-length)
+            (max -1 (min (1- company-candidates-length) selection))))
+    (when (or force-update (not (equal selection company-selection)))
+      (setq company-selection selection
+            company-selection-changed t)
+      (company-call-frontends 'update)))
+
+  (defadvice company-tooltip--lines-update-offset (before allow-no-selection (selection _num-lines _limit))
+    "Allow selection to be -1"
+    (when (eq selection -1)
+      (ad-set-arg 0 0)))
+
+  (defadvice company-tooltip--simple-update-offset (before allow-no-selection (selection _num-lines limit))
+    "Allow selection to be -1"
+    (when (eq selection -1)
+      (ad-set-arg 0 0)))
+
+  (with-eval-after-load 'company
+    (define-key company-active-map [tab] 'company-simple-complete-next)
+    (define-key company-active-map (kbd "TAB") 'company-simple-complete-next)
+    (define-key company-active-map (kbd "<S-tab>") 'company-simple-complete-previous)
+    (define-key company-active-map (kbd "<backtab>") 'company-simple-complete-previous)
+    (define-key company-active-map (kbd "<C-return>") 'company-simple-complete-selection-and-quit)
+      (dotimes (i 10)
+        (define-key company-active-map (read-kbd-macro (format "M-%d" i)) 'company-simple-complete-number-and-quit))
+    (define-key company-active-map (kbd "RET") nil)
+    (define-key company-active-map (kbd "<return>") nil)
+
+    (put 'company-simple-complete-next 'company-keep t)
+    (put 'company-simple-complete-previous 'company-keep t)
+    (setq company-require-match nil)
+    (ad-activate 'company-set-selection)
+    (ad-activate 'company-tooltip--simple-update-offset)
+    (ad-activate 'company-tooltip--lines-update-offset)
+    (add-to-list 'company-frontends 'company-simple-complete-frontend))
+#+END_SRC
+**** ac
+#+BEGIN_SRC emacs-lisp
+;;  (add-hook 'after-init-hook #'auto-complete-mode)
+;;  (ac-config-default)
+;;  (setq ac-use-menu-map t)
+;;  (ac-set-trigger-key "TAB")
+;;  (setq ac-auto-start 3)
+;;  (set-face-background 'ac-candidate-face "color-235")
+;;  (set-face-underline 'ac-candidate-face "color-235")
+;;  (set-face-foreground 'ac-candidate-face "#008b8b")
+;;  (set-face-background 'ac-completion-face "brightblack")
+;;  (set-face-underline 'ac-completion-face "color-235")
+;;  (set-face-foreground 'ac-completion-face "#008b8b")
+#+END_SRC
+*** Helm
+**** COMMENT noob config
+  (require 'helm)
+  (require 'helm-config)
+
+  (setq helm-split-window-in-side-p t
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-move-to-line-cycle-in-source nil)
+
+  (when (executable-find "ack")
+    (setq helm-grep-default-command
+          "ack -Hn --no-group --no-color %e %p %f"
+          helm-grep-default-recurse-command
+          "ack -H --no-group --no-color %e %p %f"))
+
+  (helm-mode 1)
+  (helm-adaptive-mode 1)
+
+**** General
+#+BEGIN_SRC emacs-lisp
+  (require 'helm)
+  (require 'helm-config)
+  ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+  ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+  ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t)) 
+
+  (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+        helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+        helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+        helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+        helm-ff-file-name-history-use-recentf t
+        helm-move-to-line-cycle-in-source     nil ; don't stop in recent commands instead cycle through everything
+        helm-echo-input-in-header-line nil)
+
+  (defun spacemacs//helm-hide-minibuffer-maybe ()
+    "Hide minibuffer in Helm session if we use the header line as input field."
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face
+                     (let ((bg-color (face-background 'default nil)))
+                       `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+
+
+  (add-hook 'helm-minibuffer-set-up-hook
+            'spacemacs//helm-hide-minibuffer-maybe)
+
+  (setq helm-autoresize-max-height 0)
+  (setq helm-autoresize-min-height 30)
+  (helm-autoresize-mode 1)
+
+  (helm-mode 1)
+#+END_SRC
+**** M-x
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
+#+END_SRC
+**** Mini - buffers
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x b") 'helm-mini)
+
+(setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match    t)
+#+END_SRC
+**** find-files
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+#+END_SRC
+**** kill-ring
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+#+END_SRC
+*** flycheck
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (require 'helm-flycheck) ;; Not necessary if using ELPA package
+  (eval-after-load 'flycheck
+    '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
+#+END_SRC
+*** Projectile
+#+BEGIN_SRC emacs-lisp
+  (require 'helm-projectile)
+  (helm-projectile-on)
+  (setq projectile-completion-system 'helm)
+#+END_SRC
+*** ace mode
+**** jump around
+#+BEGIN_SRC emacs-lisp
+(autoload
+  'ace-jump-mode
+  "ace-jump-mode"
+  "Emacs quick move minor mode"
+  t)
+
+(global-set-key (kbd "C-c s") 'ace-jump-mode)
+
+;enable a more powerful jump back function from ace jump mode
+
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(global-set-key (kbd "C-c M-c") 'ace-jump-mode-pop-mark)
+#+END_SRC
+**** windows
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x o") 'ace-window)
+#+END_SRC
+**** zap
+#+BEGIN_SRC emacs-lisp
+;;Bind `(ace-jump-zap-up-to-char)' or `(ace-jump-zap-to-char)' to the
+;;key-binding of your choice.
+(global-set-key (kbd "C-c k") 'ace-jump-zap-to-char)
+(global-set-key (kbd "C-c K") 'ace-jump-zap-up-to-char)
+#+END_SRC
+**** multiple cursors
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c m") 'ace-mc-add-multiple-cursors)
+(global-set-key (kbd "C-c M") 'ace-mc-add-single-cursor)
+#+END_SRC
+*** fill column
+#+BEGIN_SRC emacs-lisp
+;; fci-mode enabled
+(require 'fill-column-indicator)
+
+;; this makes fci off @ dired and other stuff where you don't need it
+(define-globalized-minor-mode global-fci-mode fci-mode
+  (lambda ()
+    (if (and
+	 (not (string-match "^\*.*\*$" (buffer-name)))
+	 (not (eq major-mode 'dired-mode))
+	 (not (eq major-mode 'org-mode)))
+	(fci-mode 1))))
+(global-fci-mode 1)
+#+END_SRC
+*** linum-relative
+relative line numbers (like Vim)
+#+BEGIN_SRC emacs-lisp :tangle no
+  (require 'linum-relative)
+  (linum-on)
+  (setq linum-relative-current-symbol "")
+  (linum-relative-on)
+#+END_SRC
+*** multiple cursors
+#+BEGIN_SRC emacs-lisp
+  (require 'multiple-cursors)
+  (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+  (global-set-key (kbd "C-c e l") 'mc/edit-lines)
+#+END_SRC
+
+
+* Key Bindings
+| Mode   | kbd       | action      |
+|--------+-----------+-------------|
+| Global | C-x k     | Kill buffer |
+| Global | C-c C-c s | Sudoedit    |
+|        |           |             |
