@@ -364,7 +364,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 *** registrers
 #+BEGIN_SRC emacs-lisp
-  (set-register ?t '(file . "~/todo.org"))
+  (set-register ?t '(file . "~/org"))
   (set-register ?s '(file . "~/.mbsyncrc"))
   (set-register ?e '(file . "~/customs/emacs/orgconf.org"))
   (set-register ?3 '(file . "~/customs/i3/config"))
