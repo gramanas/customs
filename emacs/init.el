@@ -28,7 +28,7 @@
      (output-html "xdg-open"))))
  '(package-selected-packages
    (quote
-    (yasnippet swiper smartparens powerline pdf-tools packed monokai-theme magit linum-relative jump-char helm-swoop helm-projectile helm-flycheck helm-company fill-column-indicator f embrace darktooth-theme company-math color-theme-sanityinc-tomorrow change-inner auctex ace-window ace-mc ace-jump-zap))))
+    (yasnippet swiper smartparens powerline pdf-tools packed monokai-theme magit linum-relative jump-char helm-swoop helm-projectile helm-flycheck helm-company fill-column-indicator f embrace darktooth-theme company-math color-theme-sanityinc-tomorrow change-inner auctex ace-window ace-mc))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

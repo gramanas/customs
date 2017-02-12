@@ -743,7 +743,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   "Emacs quick move minor mode"
   t)
 
-(global-set-key (kbd "C-c s") 'ace-jump-mode)
+(global-set-key (kbd "C-c s") 'ace-jump-char-mode)
 
 ;enable a more powerful jump back function from ace jump mode
 
@@ -759,13 +759,6 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 **** windows
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x o") 'ace-window)
-#+END_SRC
-**** zap
-#+BEGIN_SRC emacs-lisp
-;;Bind `(ace-jump-zap-up-to-char)' or `(ace-jump-zap-to-char)' to the
-;;key-binding of your choice.
-(global-set-key (kbd "C-c k") 'ace-jump-zap-to-char)
-(global-set-key (kbd "C-c K") 'ace-jump-zap-up-to-char)
 #+END_SRC
 **** multiple cursors
 #+BEGIN_SRC emacs-lisp
