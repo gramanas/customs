@@ -801,6 +801,11 @@ relative line numbers (like Vim)
   (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
   (global-set-key (kbd "C-c e l") 'mc/edit-lines)
 #+END_SRC
+*** magit
+**** magit-status
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x m") 'magit-status)
+#+END_SRC
 
 
 * Key Bindings
