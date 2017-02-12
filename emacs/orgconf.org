@@ -46,12 +46,10 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
             s                  
             yasnippet          
             ace-jump-mode      
-            ace-jump-zap       
             ace-mc             
             ace-window         
             auctex             
             change-inner
-            linum-relative      
             color-theme-sanityinc-tomorrow 
             company            
             company-math       
@@ -66,7 +64,6 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
             helm-swoop         
             jump-char          
             monokai-theme      
-            powerline          
             projectile
             swiper))
          ;; Remove all packages already installed
@@ -422,16 +419,6 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
         '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
           ("WAITING" . "yellow")))
 #+END_SRC
-*** smartparens
-**** Initialize
-#+BEGIN_SRC emacs-lisp
-  (require 'smartparens-config)
-  (add-hook 'js-mode-hook #'smartparens-mode)
-  (add-hook 'python-mode-hook #'smartparens-mode)
-  (add-hook 'tex-mode-hook #'smartparens-mode)
-  (add-hook 'c-mode-hook #'smartparens-mode)
-  (add-hook 'c++-mode-hook #'smartparens-mode)
-#+END_SRC
 *** expand region
 #+BEGIN_SRC emacs-lisp
 (require 'expand-region)
@@ -444,6 +431,20 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (require 'change-inner)
   (global-set-key (kbd "M-i") 'change-inner)
   (global-set-key (kbd "M-o") 'change-outer)
+#+END_SRC
+*** smartparens
+**** Initialize
+#+BEGIN_SRC emacs-lisp
+  (require 'smartparens-config)
+  (add-hook 'js-mode-hook #'smartparens-mode)
+  (add-hook 'python-mode-hook #'smartparens-mode)
+  (add-hook 'tex-mode-hook #'smartparens-mode)
+  (add-hook 'c-mode-hook #'smartparens-mode)
+  (add-hook 'c++-mode-hook #'smartparens-mode)
+#+END_SRC
+*** embrace
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-,") #'embrace-commander)
 #+END_SRC
 *** Auto Complete
 **** Company
@@ -800,7 +801,7 @@ relative line numbers (like Vim)
   (global-set-key (kbd "C-x m") 'magit-status)
 #+END_SRC
 
-
+     
 * Key Bindings
 | Mode   | kbd       | action      |
 |--------+-----------+-------------|
