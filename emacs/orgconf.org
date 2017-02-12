@@ -1,5 +1,4 @@
 * CONFIGURATION 
-  TODO: Greek as default other input method
 ** General
 *** Trivial Stuff
 #+BEGIN_SRC emacs-lisp
