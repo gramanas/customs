@@ -29,47 +29,62 @@
 Tangle is set to NO since I dont want to check every time I start emacs or emacsdaemon.
 #+BEGIN_SRC emacs-lisp :tangle no
   (let* ((packages
-          '(async              
-            avy
-            magit                
+          '(ace-jump-mode      
+            ace-window         
+            alert              
+            anaconda-mode      
+            async              
+            auctex             
+            auto-complete      
+            autothemer         
+            avy                
+            change-inner       
+            color-theme-sanityinc-tomorrow 
+            company            
+            company-anaconda   
+            company-math       
+            darktooth-theme    
             dash               
+            embrace            
             epl                
+            expand-region      
+            f                  
+            fill-column-indicator
+            flycheck           
+            flyspell-correct   
+            git-commit         
+            gntp               
             helm               
+            helm-company       
             helm-core          
+            helm-flycheck      
+            helm-projectile    
+            helm-swoop         
             ivy                
+            jump-char          
+            linum-relative     
+            log4e              
+            magit              
+            magit-popup        
             math-symbol-lists  
+            monokai-theme      
             multiple-cursors   
             packed             
             pkg-info           
             popup              
-            s                  
+            projectile         
+            pythonic           
+            s 
+            smartparens        
+            swiper             
+            with-editor
             yasnippet          
-            ace-jump-mode      
-            ace-mc             
-            ace-window         
-            auctex             
-            change-inner
-            color-theme-sanityinc-tomorrow 
-            company            
-            company-math       
-            darktooth-theme    
-            embrace            
-            expand-region      
-            fill-column-indicator 
-            flycheck           
-            helm-company       
-            helm-flycheck      
-            helm-projectile    
-            helm-swoop         
-            jump-char          
-            monokai-theme      
-            projectile
-            swiper))
+            ace-mc))
          ;; Remove all packages already installed
          (packages (remove-if 'package-installed-p packages)))
     (when packages
-    (ignore-errors (package-refresh-contents)
-                   (mapcar 'package-install packages))))
+      (ignore-errors (package-refresh-contents)
+                     (mapcar 'package-install packages))))
 #+END_SRC
 *** Looks & Feels
 **** fonts
