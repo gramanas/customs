@@ -3,6 +3,7 @@
 ** General
 *** Trivial Stuff
 #+BEGIN_SRC emacs-lisp
+  (setq default-input-method "greek")  
   (semantic-mode 1)
   (column-number-mode t)
   (global-linum-mode -1)
