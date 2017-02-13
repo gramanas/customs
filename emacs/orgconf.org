@@ -92,14 +92,15 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 **** fonts
 #+BEGIN_SRC emacs-lisp
+  (set-frame-font "Source Code Pro - 10")
+#+END_SRC
+***** purlup
+#+BEGIN_SRC emacs-lisp :tangle no
   (setq hrs/default-font "Source Code Pro")
   (setq hrs/default-font-size 10)
   (setq hrs/current-font-size hrs/default-font-size)
 
   (setq hrs/font-change-increment 1.01)
-
-  (set-frame-font (concat hrs/default-font "-" (number-to-string hrs/current-font-size)))
-
 
   (defun hrs/set-font-size ()
     "Set the font to `hrs/default-font' at `hrs/current-font-size'."
@@ -833,7 +834,7 @@ relative line numbers (like Vim)
   (global-set-key (kbd "C-x m") 'magit-status)
 #+END_SRC
 
-     
+
 * Key Bindings
 | Mode   | kbd       | action      |
 |--------+-----------+-------------|
