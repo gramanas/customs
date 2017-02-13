@@ -54,7 +54,8 @@ alias egrep='egrep --color=auto'
 
 alias ls='ls --color=auto'
 alias l='ls -lah --color=auto'
-alias edae='GTK_THEME=Adwaita:dark emacs --daemon'
+#alias edae='GTK_THEME=Adwaita:dark emacs --daemon'
+alias edae='emacs --daemon'
 alias e='emacsclient -t'
 alias eg='emacsclient -c'
 
