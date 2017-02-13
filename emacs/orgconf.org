@@ -98,6 +98,9 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
   (setq hrs/font-change-increment 1.01)
 
+  (set-default-font (concat hrs/default-font "-" (number-to-string hrs/current-font-size)))
+
+
   (defun hrs/set-font-size ()
     "Set the font to `hrs/default-font' at `hrs/current-font-size'."
     (set-frame-font
