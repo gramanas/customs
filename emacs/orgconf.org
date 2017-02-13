@@ -98,7 +98,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
   (setq hrs/font-change-increment 1.01)
 
-  (set-default-font (concat hrs/default-font "-" (number-to-string hrs/current-font-size)))
+  (set-frame-font (concat hrs/default-font "-" (number-to-string hrs/current-font-size)))
 
 
   (defun hrs/set-font-size ()
@@ -336,7 +336,15 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 **** AucTeX preview size 
 #+BEGIN_SRC emacs-lisp
   (set-default 'preview-scale-function 1)
+  (defun update-org-latex-fragment-scale ()
+    (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
+      (plist-put org-format-latex-options :scale (* 5.3 text-scale-factor))))
+  (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale)
 #+END_SRC
+
+#+RESULTS:
+| update-org-latex-fragment-scale |
+
 **** AucTeX master file
 #+BEGIN_SRC emacs-lisp
   (setq-default TeX-master nil)
@@ -423,6 +431,10 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 ***** Pretty colors for code blocks
 #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
+#+END_SRC
+***** Bigger latex formulas
+#+BEGIN_SRC emacs-lisp
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 #+END_SRC
 **** Tabs act naturally in code snipets
 #+BEGIN_SRC emacs-lisp
