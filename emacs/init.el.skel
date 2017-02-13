@@ -1,0 +1,14 @@
+;;; init --- script
+;;; Commentary:
+;;; Starts stuff
+;;; Code:
+(package-initialize)
+
+(require 'org)
+(org-babel-load-file
+ (expand-file-name "orgconf.org"
+		   user-emacs-directory))
+
+(put 'dired-find-alternate-file 'disabled nil)
+
+;;; init.el ends here
