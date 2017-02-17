@@ -452,49 +452,93 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
         '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
           ("WAITING" . "yellow")))
 #+END_SRC
-**** latex export
+**** export
+***** latex packages
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'ox-latex  
     (add-to-list 'org-latex-classes
                  '("article"
                    "\\documentclass[11pt]{article}
-  [NO-DEFAULT-PACKAGES]
-  \\usepackage{fixltx2e}
-  \\usepackage{graphicx}
-  \\usepackage{longtable}
-  \\usepackage{float}
-  \\usepackage{wrapfig}
-  \\usepackage{rotating}
-  \\usepackage[normalem]{ulem}
-  \\usepackage{amsmath}
-  \\usepackage{textcomp}
-  \\usepackage{marvosym}
-  \\usepackage{wasysym}
-  \\usepackage{amssymb}
-  \\usepackage{hyperref}
-  \\tolerance=1000
-  \\usepackage{fullpage}
-  \\usepackage{pdfpages}
-  \\usepackage{amsmath}
-  \\usepackage{listings}
-  \\usepackage[cm-default]{fontspec}
-  \\usepackage{xunicode}
-  \\usepackage{xltxtra}
-  \\usepackage{xgreek}
-  \\setmainfont[Mapping=tex-text]{GFS Didot}
-  \\setmonofont[Mapping=tex-text]{Source Code Pro}"
-  ("\\section{%s}" . "\\section*{%s}")
-  ("\\subsection{%s}" . "\\subsection*{%s}")
-  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-#+END_SRC
+    [NO-DEFAULT-PACKAGES]
+    \\usepackage{fixltx2e}
+    \\usepackage{graphicx}
+    \\usepackage{longtable}
+    \\usepackage{float}
+    \\usepackage{wrapfig}
+    \\usepackage{rotating}
+    \\usepackage[normalem]{ulem}
+    \\usepackage{amsmath}
+    \\usepackage{textcomp}
+    \\usepackage{marvosym}
+    \\usepackage{wasysym}
+    \\usepackage{amssymb}
+    \\usepackage{hyperref}
+    \\tolerance=1000
+    \\usepackage{fullpage}
+    \\usepackage{pdfpages}
+    \\usepackage{amsmath}
+    \\usepackage{listings}
+    \\usepackage[cm-default]{fontspec}
+    \\usepackage{xunicode}
+    \\usepackage{xltxtra}
+    \\usepackage{xgreek}
+    \\setmainfont[Mapping=tex-text]{GFS Didot}
+    \\setmonofont[Mapping=tex-text]{Source Code Pro}
+  \\definecolor{mycomment}{HTML}{7A7A7A}
+  \\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+  \\definecolor{mymauve}{rgb}{0.58,0,0.82}
+  \\definecolor{background}{HTML}{EEEEEE}
 
+  \\lstset{ %
+    keywordstyle=\\color{blue},       % keyword style
+    backgroundcolor=\\color{background},   % choose the background color; you must add \\usepackage{color} or \\usepackage{xcolor}; should come as last argument
+    basicstyle=\\footnotesize\\ttfamily,        % the size of the fonts that are used for the code
+    breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+    breaklines=true,                 % sets automatic line breaking
+    captionpos=b,                    % sets the caption-position to bottom
+    commentstyle=\\color{mycomment},    % comment style
+    deletekeywords={...},            % if you want to delete keywords from the given language
+    escapeinside={\\%*}{*},           % if you want to add LaTeX within your code
+    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+    frame=false,                     % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)  
+    language=python,                 % the language of the code
+    morekeywords={*,...},            % if you want to add more keywords to the set
+    numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+    %numbersep=5pt,                   % how far the line-numbers are from the code
+    %numberstyle=\\tiny\\color{mygray}, % the style that is used for the line-numbers
+    %stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+    rulecolor=\\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stringstyle=\\color{mymauve},     % string literal style
+    tabsize=2,                       % sets default tabsize to 2 spaces
+    %title=\\footnotesize\\ttfamily> \\lstname                   % show the filename of files included with \\lstinputlisting; also try caption instead of title
+    % caption='Sample code'
+  }
+  "
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+
+#+END_SRC
+***** latex engine
 #+BEGIN_SRC emacs-lisp
   (setq org-latex-pdf-process
      '("latexmk -pdflatex=xelatex -pdf %f"))
 #+END_SRC
-
+***** export listings
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-listings t)
+  (setq org-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "[LaTeX]TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R")))))
+  (setq org-export-latex-listings t)
+  (setq org-export-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
+#+END_SRC
+      
 *** expand region
 #+BEGIN_SRC emacs-lisp
 (require 'expand-region)
