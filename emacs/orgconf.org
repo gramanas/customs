@@ -92,7 +92,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 **** fonts
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "Source Code Pro - 10")
+  (set-frame-font "Source Code Pro 10")
 #+END_SRC
 ***** purlup
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -523,8 +523,6 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-
-
 #+END_SRC
 ***** latex engine
 #+BEGIN_SRC emacs-lisp
@@ -534,7 +532,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 ***** export listings
 #+BEGIN_SRC emacs-lisp
   (setq org-latex-listings t)
-  (setq org-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "[LaTeX]TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R")))))
+  (setq org-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "[LaTeX]TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
   (setq org-export-latex-listings t)
   (setq org-export-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
 #+END_SRC
