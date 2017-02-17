@@ -452,6 +452,49 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
         '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
           ("WAITING" . "yellow")))
 #+END_SRC
+**** latex export
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'ox-latex  
+    (add-to-list 'org-latex-classes
+                 '("article"
+                   "\\documentclass[11pt]{article}
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{fixltx2e}
+  \\usepackage{graphicx}
+  \\usepackage{longtable}
+  \\usepackage{float}
+  \\usepackage{wrapfig}
+  \\usepackage{rotating}
+  \\usepackage[normalem]{ulem}
+  \\usepackage{amsmath}
+  \\usepackage{textcomp}
+  \\usepackage{marvosym}
+  \\usepackage{wasysym}
+  \\usepackage{amssymb}
+  \\usepackage{hyperref}
+  \\tolerance=1000
+  \\usepackage{fullpage}
+  \\usepackage{pdfpages}
+  \\usepackage{amsmath}
+  \\usepackage{listings}
+  \\usepackage[cm-default]{fontspec}
+  \\usepackage{xunicode}
+  \\usepackage{xltxtra}
+  \\usepackage{xgreek}
+  \\setmainfont[Mapping=tex-text]{GFS Didot}
+  \\setmonofont[Mapping=tex-text]{Source Code Pro}"
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-pdf-process
+     '("latexmk -pdflatex=xelatex -pdf %f"))
+#+END_SRC
+
 *** expand region
 #+BEGIN_SRC emacs-lisp
 (require 'expand-region)
@@ -834,7 +877,7 @@ relative line numbers (like Vim)
   (global-set-key (kbd "C-x m") 'magit-status)
 #+END_SRC
 
-
+     
 * Key Bindings
 | Mode   | kbd       | action      |
 |--------+-----------+-------------|
