@@ -89,9 +89,34 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 *** Looks & Feels
 **** Themes
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'custom-theme-load-path "~~/.emacs.d/elpa/color-theme-sanityinc-tomorrow-20170106.1620/")
+***** Ample
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/ample-theme-20161213.912")
+  (load-theme 'ample t)
+#+END_SRC
+
+***** Darktooth
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/darktooth-theme-20170216.2034")
+  (load-theme 'darktooth t)
+#+END_SRC
+
+***** Sanityinc tomorrow
+#+BEGIN_SRC emacs-lisp :tangle yes :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-sanityinc-tomorrow-20170106.1620/")
   (load-theme 'sanityinc-tomorrow-bright t)
+#+END_SRC
+
+***** black and white
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/tao-theme-20170209.950")
+  (load-theme 'tao-yin t)
+#+END_SRC
+
+***** Monokai
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/monokai-theme-20161216.628")
+  (load-theme 'monokai t)
 #+END_SRC
 
 **** fonts
