@@ -392,6 +392,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 *** registrers
 #+BEGIN_SRC emacs-lisp
   (set-register ?t '(file . "~/org"))
+  (set-register ?n '(file . "~/Notes"))
   (set-register ?s '(file . "~/.mbsyncrc"))
   (set-register ?e '(file . "~/customs/emacs/orgconf.org"))
   (set-register ?3 '(file . "~/customs/i3/config"))
@@ -451,6 +452,10 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (setq org-todo-keyword-faces
         '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
           ("WAITING" . "yellow")))
+#+END_SRC
+**** agenda command
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c a") 'org-agenda)
 #+END_SRC
 *** expand region
 #+BEGIN_SRC emacs-lisp
