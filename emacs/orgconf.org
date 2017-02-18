@@ -11,6 +11,7 @@
   (show-paren-mode t)
   (tool-bar-mode -1)
 #+END_SRC
+
 *** Packages
 **** Init
 #+BEGIN_SRC emacs-lisp
@@ -23,6 +24,7 @@
           ("melpa" . "https://melpa.org/packages/")
           ("melpa-stable" . "https://stable.melpa.org/packages/")))
 #+END_SRC
+
 **** default-packages
 Tangle is set to NO since I dont want to check every time I start emacs or emacsdaemon.
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -84,58 +86,24 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
       (ignore-errors (package-refresh-contents)
                      (mapcar 'package-install packages))))
 #+END_SRC
+
 *** Looks & Feels
 **** Themes
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-sanityinc-tomorrow-20160916.1758")
+  (add-to-list 'custom-theme-load-path "~~/.emacs.d/elpa/color-theme-sanityinc-tomorrow-20170106.1620/")
   (load-theme 'sanityinc-tomorrow-bright t)
 #+END_SRC
+
 **** fonts
 #+BEGIN_SRC emacs-lisp
   (set-frame-font "Source Code Pro 10")
 #+END_SRC
-***** purlup
-#+BEGIN_SRC emacs-lisp :tangle no
-  (setq hrs/default-font "Source Code Pro")
-  (setq hrs/default-font-size 10)
-  (setq hrs/current-font-size hrs/default-font-size)
 
-  (setq hrs/font-change-increment 1.01)
-
-  (defun hrs/set-font-size ()
-    "Set the font to `hrs/default-font' at `hrs/current-font-size'."
-    (set-frame-font
-     (concat hrs/default-font "-" (number-to-string hrs/current-font-size))))
-
-  (defun hrs/reset-font-size ()
-    "Change font size back to `hrs/default-font-size'."
-    (interactive)
-    (setq hrs/current-font-size hrs/default-font-size)
-    (hrs/set-font-size))
-
-  (defun hrs/increase-font-size ()
-    "Increase current font size by a factor of `hrs/font-change-increment'."
-    (interactive)
-    (setq hrs/current-font-size
-          (ceiling (* hrs/current-font-size hrs/font-change-increment)))
-    (hrs/set-font-size))
-
-  (defun hrs/decrease-font-size ()
-    "Decrease current font size by a factor of `hrs/font-change-increment', down to a minimum size of 1."
-    (interactive)
-    (setq hrs/current-font-size
-          (max 1
-               (floor (/ hrs/current-font-size hrs/font-change-increment))))
-    (hrs/set-font-size))
-
-  (define-key global-map (kbd "C-M-)") 'hrs/reset-font-size)
-  (define-key global-map (kbd "C-M-+") 'hrs/increase-font-size)
-  (define-key global-map (kbd "C-M-_") 'hrs/decrease-font-size)
-#+END_SRC
 **** Highlight current line
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode t)
 #+END_SRC
+
 **** Miscs
 #+BEGIN_SRC emacs-lisp
   (setq auto-revert-interval 1            ; Refresh buffers fast
@@ -155,6 +123,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
                 ;split-width-threshold 40         ; Split verticly by default
                 ;auto-fill-function 'do-auto-fill) ; Auto-fill-mode everywhere
 #+END_SRC
+
 **** transparent background on terminal
 #+BEGIN_SRC emacs-lisp
 ;; "no clue" how it works
@@ -170,10 +139,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 (add-hook 'window-setup-hook 'on-after-init)
 #+END_SRC
+
 **** python indent
 #+BEGIN_SRC emacs-lisp
   (setq python-indent-offset 2)
 #+END_SRC
+
 *** Utils
 **** resize windows
 #+BEGIN_SRC emacs-lisp
@@ -182,6 +153,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (global-set-key (kbd "S-C-<down>") 'shrink-window)
   (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 #+END_SRC
+
 **** save macro
 #+BEGIN_SRC emacs-lisp
   (defun save-macro (name)
@@ -197,10 +169,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
    (newline)                             ; insert a newline
    (switch-to-buffer nil))               ; return to the initial buffer
 #+END_SRC
+
 **** linum
 #+BEGIN_SRC emacs-lisp
 ;; '(global-linum-mode t)
 #+END_SRC
+
 **** kill-word
 #+BEGIN_SRC emacs-lisp
   (fset 'Kill\ word
@@ -212,6 +186,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
   (global-set-key (kbd "C-c w") 'Kill\ word)
 #+END_SRC
+
 **** view buffer name
 #+BEGIN_SRC emacs-lisp
 (defun hrs/view-buffer-name ()
@@ -221,6 +196,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 (global-set-key (kbd "C-c v") 'hrs/view-buffer-name)
 #+END_SRC
+
 **** kill buffer -no questions asked-
 #+BEGIN_SRC emacs-lisp
 (defun hrs/kill-current-buffer ()
@@ -230,6 +206,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 (global-set-key (kbd "C-x k") 'hrs/kill-current-buffer)
 #+END_SRC
+
 **** sudoedit inside emacs
 #+BEGIN_SRC emacs-lisp
 (defun hrs/find-file-as-sudo ()
@@ -240,10 +217,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 (global-set-key (kbd "C-c f s") 'hrs/find-file-as-sudo)
 #+END_SRC
+
 **** replace 'yes or no' with 'y or n'
 #+BEGIN_SRC emacs-lisp
   (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
+
 **** Split n Switch
 #+BEGIN_SRC emacs-lisp
   ;; switch when split
@@ -262,6 +241,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (global-set-key (kbd "C-x 2") 'hrs/split-window-below-and-switch)
   (global-set-key (kbd "C-x 3") 'hrs/split-window-right-and-switch)
 #+END_SRC
+
 **** delete spaces around cursors
 #+BEGIN_SRC emacs-lisp
   (defun cycle-spacing-delete-newlines ()
@@ -273,6 +253,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
   (global-set-key (kbd "C-c j") 'cycle-spacing-delete-newlines)
 #+END_SRC
+
 **** jump to symbol like this
 #+BEGIN_SRC emacs-lisp
   (defun jump-to-symbol-internal (&optional backwardp)
@@ -305,6 +286,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (global-set-key (kbd "M-.") 'jump-to-next-like-this)
   (global-set-key (kbd "M-,") 'jump-to-previous-like-this)
 #+END_SRC
+
 **** duplicate thing
 #+BEGIN_SRC emacs-lisp
   (defun duplicate-thing (comment)
@@ -322,6 +304,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
   (global-set-key (kbd "C-c d")   'duplicate-thing)
 #+END_SRC
+
 **** kbd to kill daemon
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c x")
@@ -329,11 +312,13 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
       (interactive)
       (save-buffers-kill-emacs t)))
 #+END_SRC
+
 *** TeX
 **** Tex Engine to use greek
 #+BEGIN_SRC emacs-lisp
   (setq-default TeX-engine 'xetex)
 #+END_SRC
+
 **** AucTeX preview size 
 #+BEGIN_SRC emacs-lisp
   (set-default 'preview-scale-function 1)
@@ -343,13 +328,11 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale)
 #+END_SRC
 
-#+RESULTS:
-| update-org-latex-fragment-scale |
-
 **** AucTeX master file
 #+BEGIN_SRC emacs-lisp
   (setq-default TeX-master nil)
 #+END_SRC
+
 **** Tex-view program selection
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables
@@ -380,15 +363,18 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
  (add-to-list 'auto-mode-alist '("\\.link\\'" . conf-unix-mode))
  (add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
 #+END_SRC
+
 **** conf-mode for files ending with rc
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("/[^/]*rc" . conf-mode) t)
 #+END_SRC
+
 **** mutt support
 #+BEGIN_SRC emacs-lisp
   ;; mail-mode when on mutt, probably will change to notmuch-message-mode
   (setq auto-mode-alist (append '(("/tmp/mutt.*" . mail-mode)) auto-mode-alist))
 #+END_SRC
+
 *** registrers
 #+BEGIN_SRC emacs-lisp
   (set-register ?t '(file . "~/org"))
@@ -398,16 +384,19 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (set-register ?b '(file . "~/customs/.bashrc"))
   (set-register ?c '(file . "~/customs/"))
 #+END_SRC
+
 *** Custom file
 **** Sane thing to do (disable it)
 #+BEGIN_SRC emacs-lisp
   custom-file (make-temp-file "")
 #+END_SRC
+
 **** If i want to have it
 #+BEGIN_SRC emacs-lisp :tangle no
   (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file)
 #+END_SRC
+
 *** Autosaves
 #+BEGIN_SRC emacs-lisp
   (defvar emacs-autosave-directory
@@ -422,10 +411,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
         auto-save-file-name-transforms
         `((".*" ,emacs-autosave-directory t)))    
 #+END_SRC
+
 *** dired something
 #+BEGIN_SRC emacs-lisp
   (put 'dired-find-alternate-file 'disabled nil)
 #+END_SRC
+
 ** Package Configurations
 *** Org-Mode
 **** Display Settings
@@ -433,25 +424,30 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
 #+END_SRC
+
 ***** Bigger latex formulas
 #+BEGIN_SRC emacs-lisp
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 #+END_SRC
+
 **** Tabs act naturally in code snipets
 #+BEGIN_SRC emacs-lisp
   (setq org-src-tab-acts-natively t)
 #+END_SRC
+
 **** todo keywords
 #+BEGIN_SRC emacs-lisp
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "DONE(d)")))
 #+END_SRC
+
 **** todo faces
 #+BEGIN_SRC emacs-lisp
   (setq org-todo-keyword-faces
         '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
           ("WAITING" . "yellow")))
 #+END_SRC
+
 **** export
 ***** latex packages
 #+BEGIN_SRC emacs-lisp
@@ -524,11 +520,13 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+END_SRC
+
 ***** latex engine
 #+BEGIN_SRC emacs-lisp
   (setq org-latex-pdf-process
      '("latexmk -pdflatex=xelatex -pdf %f"))
 #+END_SRC
+
 ***** export listings
 #+BEGIN_SRC emacs-lisp
   (setq org-latex-listings t)
@@ -537,6 +535,20 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (setq org-export-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
 #+END_SRC
       
+**** babel-langs
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)))
+#+END_SRC
+
+**** src blocks face
+#+BEGIN_SRC emacs-lisp :tangle no
+  (setq org-src-block-faces  '(("emacs-lisp" (:foreground "#FFFFFF"))
+      ("python" (:background "#e5ffb8"))))
+#+END_SRC
+
 *** expand region
 #+BEGIN_SRC emacs-lisp
 (require 'expand-region)
@@ -544,12 +556,14 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 (global-set-key (kbd "C->")  'er/expand-region)
 (global-set-key (kbd "C-<")  'er/contract-region)
 #+END_SRC
+
 *** change inside
 #+BEGIN_SRC emacs-lisp
   (require 'change-inner)
   (global-set-key (kbd "M-i") 'change-inner)
   (global-set-key (kbd "M-o") 'change-outer)
 #+END_SRC
+
 *** smartparens
 **** Initialize
 #+BEGIN_SRC emacs-lisp
@@ -560,10 +574,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (add-hook 'c-mode-hook #'smartparens-mode)
   (add-hook 'c++-mode-hook #'smartparens-mode)
 #+END_SRC
+
 *** embrace
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-,") #'embrace-commander)
 #+END_SRC
+
 *** Auto Complete
 **** Company
 ***** Initialize
@@ -572,6 +588,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (require 'company)
   (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
+
 ***** Aggresive auto complete
 #+BEGIN_SRC emacs-lisp 
 (setq company-idle-delay 0
@@ -582,17 +599,20 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
       company-transformers '(company-sort-by-occurrence
                              company-sort-by-backend-importance))
 #+END_SRC
+
 ***** Keybindings
 ****** Manual Begin
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-;") 'company-manual-begin)
 #+END_SRC
+
 ****** Next-Prev
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-n") 'company-select-next)
     (define-key company-active-map (kbd "C-p") 'company-select-previous))
 #+END_SRC
+
 ***** helm interface
 #+BEGIN_SRC emacs-lisp
   (eval-after-load 'company
@@ -600,6 +620,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
        (define-key company-mode-map (kbd "C-:") 'helm-company)
        (define-key company-active-map (kbd "C-s") 'helm-company)))
 #+END_SRC
+
 ***** Style
 #+BEGIN_SRC emacs-lisp
   (setq company-tooltip-align-annotations t)
@@ -622,6 +643,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
    '(company-tooltip-common-selection
      ((t (:background "gray15" :foreground "gray69")))))
 #+END_SRC
+
 ***** python
 #+BEGIN_SRC emacs-lisp
   (eval-after-load "company"
@@ -632,6 +654,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (eval-after-load "company"
     '(add-to-list 'company-backends '(company-anaconda :with company-capf)))
 #+END_SRC
+
 ***** Tab cycles
 #+BEGIN_SRC emacs-lisp :tangle no
   (eval-after-load 'company
@@ -643,6 +666,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
        (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
        (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
 #+END_SRC
+
 ***** wow
 #+BEGIN_SRC emacs-lisp :tangle no
   (defvar-local company-simple-complete--previous-prefix nil)
@@ -739,6 +763,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
     (ad-activate 'company-tooltip--lines-update-offset)
     (add-to-list 'company-frontends 'company-simple-complete-frontend))
 #+END_SRC
+
 **** ac
 #+BEGIN_SRC emacs-lisp
 ;;  (add-hook 'after-init-hook #'auto-complete-mode)
@@ -753,6 +778,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 ;;  (set-face-underline 'ac-completion-face "color-235")
 ;;  (set-face-foreground 'ac-completion-face "#008b8b")
 #+END_SRC
+
 *** Helm
 **** COMMENT noob config
   (require 'helm)
@@ -820,11 +846,13 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
   (helm-mode 1)
 #+END_SRC
+
 **** M-x
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-x") 'helm-M-x)
   (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
 #+END_SRC
+
 **** Mini - buffers
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x b") 'helm-mini)
@@ -832,14 +860,17 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 (setq helm-buffers-fuzzy-matching t
       helm-recentf-fuzzy-match    t)
 #+END_SRC
+
 **** find-files
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 #+END_SRC
+
 **** kill-ring
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 #+END_SRC
+
 *** flycheck
 #+BEGIN_SRC emacs-lisp
   (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -847,12 +878,14 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (eval-after-load 'flycheck
     '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
 #+END_SRC
+
 *** Projectile
 #+BEGIN_SRC emacs-lisp
   (require 'helm-projectile)
   (helm-projectile-on)
   (setq projectile-completion-system 'helm)
 #+END_SRC
+
 *** ace mode
 **** jump around
 #+BEGIN_SRC emacs-lisp
@@ -875,15 +908,18 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   '(ace-jump-mode-enable-mark-sync))
 (global-set-key (kbd "C-c M-c") 'ace-jump-mode-pop-mark)
 #+END_SRC
+
 **** windows
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x o") 'ace-window)
 #+END_SRC
+
 **** multiple cursors
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c m") 'ace-mc-add-multiple-cursors)
 (global-set-key (kbd "C-c M") 'ace-mc-add-single-cursor)
 #+END_SRC
+
 *** fill column
 #+BEGIN_SRC emacs-lisp
 ;; fci-mode enabled
@@ -899,6 +935,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 	(fci-mode 1))))
 (global-fci-mode 1)
 #+END_SRC
+
 *** linum-relative
 relative line numbers (like Vim)
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -907,19 +944,20 @@ relative line numbers (like Vim)
   (setq linum-relative-current-symbol "")
   (linum-relative-on)
 #+END_SRC
+
 *** multiple cursors
 #+BEGIN_SRC emacs-lisp
   (require 'multiple-cursors)
   (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
   (global-set-key (kbd "C-c e l") 'mc/edit-lines)
 #+END_SRC
+
 *** magit
 **** magit-status
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x m") 'magit-status)
 #+END_SRC
 
-     
 * Key Bindings
 | Mode   | kbd       | action      |
 |--------+-----------+-------------|
