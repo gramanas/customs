@@ -1,4 +1,6 @@
-* CONFIGURATION 
+#+PROPERTY: tangle yes
+
+* CONFIGURATION
 ** General
 *** Trivial Stuff
 #+BEGIN_SRC emacs-lisp
@@ -89,6 +91,18 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 *** Looks & Feels
 **** Themes
+***** Moe
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/moe-theme-20170111.1838")
+  (load-theme 'moe-dark t)
+#+END_SRC
+
+***** Sanityinc tomorrow
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-sanityinc-tomorrow-20170106.1620/")
+  (load-theme 'sanityinc-tomorrow-bright t)
+#+END_SRC
+
 ***** Ample
 #+BEGIN_SRC emacs-lisp :tangle no :results output silent
   (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/ample-theme-20161213.912")
@@ -96,15 +110,9 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 ***** Darktooth
-#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent
   (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/darktooth-theme-20170216.2034")
   (load-theme 'darktooth t)
-#+END_SRC
-
-***** Sanityinc tomorrow
-#+BEGIN_SRC emacs-lisp :tangle yes :results output silent
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-sanityinc-tomorrow-20170106.1620/")
-  (load-theme 'sanityinc-tomorrow-bright t)
 #+END_SRC
 
 ***** black and white
@@ -125,7 +133,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** Highlight current line
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (global-hl-line-mode t)
 #+END_SRC
 
@@ -150,7 +158,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** transparent background on terminal
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;; "no clue" how it works
 (defun on-frame-open (frame)
   (if (not (display-graphic-p frame))
@@ -564,8 +572,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+BEGIN_SRC emacs-lisp
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t)
-     (python . t)))
+   '((python . t)))
 #+END_SRC
 
 **** src blocks face
