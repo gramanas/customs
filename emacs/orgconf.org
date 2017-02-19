@@ -555,6 +555,9 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 ***** latex engine
+I can use #+latex_compiler: xelatex instead of the following code
+But since the packages above require xelatex i'll stick with 
+this one
 #+BEGIN_SRC emacs-lisp
   (setq org-latex-pdf-process
      '("latexmk -pdflatex=xelatex -pdf %f"))
