@@ -411,7 +411,6 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 
   ;; Yes, you can do this same trick with the cool "It's All Text" firefox add-on :-)
   (add-to-list 'auto-mode-alist '("/mutt-\\|itsalltext.*mail\\.google" . mail-mode))
-  (add-hook 'mail-mode-hook 'turn-on-auto-fill)
   (add-hook
    'mail-mode-hook
    (lambda ()
@@ -421,7 +420,7 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
          (save-buffer)
          (server-edit)))))
 #+END_SRC
-m
+
 *** registrers
 #+BEGIN_SRC emacs-lisp
   (set-register ?t '(file . "~/org"))
