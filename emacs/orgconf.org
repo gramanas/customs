@@ -1,4 +1,4 @@
-#+PROPERTY: tangle yes
+#+PROPERTY: tangle yes :results output silent
 
 * CONFIGURATION
 ** General
@@ -482,6 +482,8 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** export
+Html export has a proble with fci-mode, here is the fix
+https://lists.gnu.org/archive/html/emacs-orgmode/2014-09/msg00777.html
 ***** latex packages
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'ox-latex  
