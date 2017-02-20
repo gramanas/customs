@@ -960,17 +960,17 @@ this one
 *** fill column
 #+BEGIN_SRC emacs-lisp
 ;; fci-mode enabled
-(require 'fill-column-indicator)
+;; (require 'fill-column-indicator)
 
 ;; this makes fci off @ dired and other stuff where you don't need it
-(define-globalized-minor-mode global-fci-mode fci-mode
-  (lambda ()
-    (if (and
-	 (not (string-match "^\*.*\*$" (buffer-name)))
-	 (not (eq major-mode 'dired-mode))
-	 (not (eq major-mode 'org-mode)))
-	(fci-mode 1))))
-(global-fci-mode 1)
+;; (define-globalized-minor-mode global-fci-mode fci-mode
+;;   (lambda ()
+;;     (if (and
+;; 	 (not (string-match "^\*.*\*$" (buffer-name)))
+;; 	 (not (eq major-mode 'dired-mode))
+;; 	 (not (eq major-mode 'org-mode)))
+;; 	(fci-mode 1))))
+;; (global-fci-mode 1)
 #+END_SRC
 
 *** linum-relative
