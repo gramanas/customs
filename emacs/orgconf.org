@@ -403,11 +403,25 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** mutt support
+Set mail mode for mutt files and replace C-x # witn C-c C-c
+
 #+BEGIN_SRC emacs-lisp
   ;; mail-mode when on mutt, probably will change to notmuch-message-mode
   (setq auto-mode-alist (append '(("/tmp/mutt.*" . mail-mode)) auto-mode-alist))
-#+END_SRC
 
+  ;; Yes, you can do this same trick with the cool "It's All Text" firefox add-on :-)
+  (add-to-list 'auto-mode-alist '("/mutt-\\|itsalltext.*mail\\.google" . mail-mode))
+  (add-hook 'mail-mode-hook 'turn-on-auto-fill)
+  (add-hook
+   'mail-mode-hook
+   (lambda ()
+     (define-key mail-mode-map [(control c) (control c)]
+       (lambda ()
+         (interactive)
+         (save-buffer)
+         (server-edit)))))
+#+END_SRC
+m
 *** registrers
 #+BEGIN_SRC emacs-lisp
   (set-register ?t '(file . "~/org"))
