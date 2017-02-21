@@ -586,6 +586,11 @@ this one
       ("python" (:background "#e5ffb8"))))
 #+END_SRC
 
+**** agenda
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files '("/home/gramanas/org"))
+#+END_SRC
+
 *** expand region
 #+BEGIN_SRC emacs-lisp
 (require 'expand-region)
@@ -670,16 +675,18 @@ this one
    '(company-tooltip
      ((t (:background "gray4" :foreground "gray85"))))
    '(company-tooltip-selection 
-     ((t (:background "gray15" :foreground "gray100"))))
+     ((t (:background "dark olive green" :foreground "gray100"))))
    '(company-tooltip-annotation
-     ((t (:background "gray4" :foreground "SandyBrown"))))   
+     ((t (:background "gray4" :foreground "goldenrod1"))))   
    '(company-tooltip-annotation-selection
-     ((t (:background "gray15" :foreground "SandyBrown"))))
+     ((t (:background "dark olive green" :foreground "goldenrod1"))))
    '(company-tooltip-common
      ((t (:background "gray4" :foreground "gray42"))))
    '(company-tooltip-common-selection
-     ((t (:background "gray15" :foreground "gray69")))))
+     ((t (:background "dark olive green" :foreground "gray69")))))
 #+END_SRC
+
+#+RESULTS:
 
 ***** python
 #+BEGIN_SRC emacs-lisp
