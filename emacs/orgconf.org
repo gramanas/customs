@@ -686,8 +686,6 @@ this one
      ((t (:background "dark olive green" :foreground "gray69")))))
 #+END_SRC
 
-#+RESULTS:
-
 ***** python
 #+BEGIN_SRC emacs-lisp
   (eval-after-load "company"
