@@ -624,11 +624,6 @@ this one
 **** Initialize
 #+BEGIN_SRC emacs-lisp
   (require 'smartparens-config)
-  (add-hook 'js-mode-hook #'smartparens-mode)
-  (add-hook 'python-mode-hook #'smartparens-mode)
-  (add-hook 'tex-mode-hook #'smartparens-mode)
-  (add-hook 'c-mode-hook #'smartparens-mode)
-  (add-hook 'c++-mode-hook #'smartparens-mode)
 #+END_SRC
 
 *** embrace
@@ -1012,6 +1007,14 @@ relative line numbers (like Vim)
 **** magit-status
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x m") 'magit-status)
+#+END_SRC
+
+** hooks
+*** prog mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'linum-mode)
+  (add-hook 'prog-mode-hook 'projectile-mode)
+  (add-hook 'prog-mode-hook #'smartparens-mode)
 #+END_SRC
 
 * Key Bindings
