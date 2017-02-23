@@ -369,16 +369,16 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 **** Tex-view program selection
 #+BEGIN_SRC emacs-lisp
-  (custom-set-variables
-   '(TeX-view-program-selection
-     (quote
-      (((output-dvi has-no-display-manager)
-        "dvi2tty")
-       ((output-dvi style-pstricks)
-        "dvips and gv")
-       (output-dvi "xdvi")
-       (output-pdf "Zathura")
-       (output-html "xdg-open")))))
+  (setq
+   TeX-view-program-selection
+   (quote
+    (((output-dvi has-no-display-manager)
+      "dvi2tty")
+     ((output-dvi style-pstricks)
+      "dvips and gv")
+     (output-dvi "xdvi")
+     (output-pdf "Zathura")
+     (output-html "xdg-open"))))
 #+END_SRC
 
 *** file to mode asociation
@@ -427,9 +427,7 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
   (set-register ?t '(file . "~/org"))
   (set-register ?s '(file . "~/.mbsyncrc"))
   (set-register ?e '(file . "~/customs/emacs/orgconf.org"))
-  (set-register ?3 '(file . "~/customs/i3/config"))
-  (set-register ?b '(file . "~/customs/.bashrc"))
-  (set-register ?c '(file . "~/customs/"))
+  (set-register ?C '(file . "~/customs/"))
 #+END_SRC
 
 *** Custom file
