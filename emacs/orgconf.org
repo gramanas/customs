@@ -599,9 +599,15 @@ this one
       ("python" (:background "#e5ffb8"))))
 #+END_SRC
 
-**** agenda
+*** org-agenda
+**** agenda files
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files '("/home/gramanas/org"))
+#+END_SRC
+
+**** agenda kbd
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c a g e") 'org-agenda)
 #+END_SRC
 
 *** expand region
