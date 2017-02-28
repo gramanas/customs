@@ -91,6 +91,20 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
                      (mapcar 'package-install packages))))
 #+END_SRC
 
+*** Spellcheck
+**** change dictionary
+#+BEGIN_SRC emacs-lisp
+  (defun fd-switch-dictionary()
+  (interactive)
+  (let* ((dic ispell-current-dictionary)
+     (change (if (string= dic "greek") "english" "greek")))
+    (ispell-change-dictionary change)
+    (message "%s dictionary" dic change)
+    ))
+
+  (global-set-key (kbd "<f8>") 'fd-switch-dictionary)
+#+END_SRC
+
 *** Looks & Feels
 **** Themes
 ***** Moe
@@ -939,10 +953,15 @@ Set 1 to 2 if I want to include every sub* in files
 
 *** flycheck
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-  (require 'helm-flycheck) ;; Not necessary if using ELPA package
+  ;(add-hook 'after-init-hook #'global-flycheck-mode)
+  ;(require 'helm-flycheck) ;; Not necessary if using ELPA package
   (eval-after-load 'flycheck
     '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
+#+END_SRC
+
+*** flyspell
+#+BEGIN_SRC emacs-lisp
+
 #+END_SRC
 
 *** Projectile
@@ -1029,7 +1048,8 @@ relative line numbers (like Vim)
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'linum-mode)
   (add-hook 'prog-mode-hook 'projectile-mode)
-  (add-hook 'prog-mode-hook #'smartparens-mode)
+  (add-hook 'prog-mode-hook 'smartparens-mode)
+  (add-hook 'prog-mode-hook 'flycheck-mode)
 #+END_SRC
 
 * Key Bindings
