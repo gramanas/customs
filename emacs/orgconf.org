@@ -1,5 +1,3 @@
-#+PROPERTY: tangle yes :results output silent
-
 * CONFIGURATION
 ** General
 *** Trivial Stuff
@@ -18,7 +16,7 @@
 
 *** Packages
 **** Init
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (require 'cl)
   (require 'package)
   (package-initialize)
@@ -93,7 +91,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 *** Spellcheck
 **** change dictionary
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (defun fd-switch-dictionary()
   (interactive)
   (let* ((dic ispell-current-dictionary)
@@ -107,6 +105,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 *** Looks & Feels
 **** Themes
+***** Darktooth
+#+BEGIN_SRC emacs-lisp  :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/darktooth-theme-20170216.2034")
+  (load-theme 'darktooth t)
+#+END_SRC
+
 ***** Moe
 #+BEGIN_SRC emacs-lisp :tangle no :results output silent
   (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/moe-theme-20170111.1838")
@@ -125,10 +129,10 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
   (load-theme 'ample t)
 #+END_SRC
 
-***** Darktooth
-#+BEGIN_SRC emacs-lisp :results output silent
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/darktooth-theme-20170216.2034")
-  (load-theme 'darktooth t)
+***** base-16
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/base16-theme-2.0/")
+  (load-theme 'base16-chalk t)
 #+END_SRC
 
 ***** black and white
@@ -144,7 +148,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** fonts
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (set-frame-font "Source Code Pro 10")
 #+END_SRC
 
@@ -154,7 +158,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** Miscs
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq auto-revert-interval 1            ; Refresh buffers fast
   ;too soon        
   ;custom-file (make-temp-file "")   ; Discard customization's
@@ -190,13 +194,13 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** python indent
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq python-indent-offset 2)
 #+END_SRC
 
 *** Utils
 **** resize windows
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
   (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
   (global-set-key (kbd "S-C-<down>") 'shrink-window)
@@ -204,7 +208,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** save macro
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (defun save-macro (name)
   "save a macro. Take a name as argument
    and save the last defined macro under
@@ -220,12 +224,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** linum
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;; '(global-linum-mode t)
 #+END_SRC
 
 **** kill-word
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (fset 'Kill\ word
         (lambda (&optional arg) 
           "Keyboard macro." 
@@ -237,7 +241,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** view buffer name
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (defun hrs/view-buffer-name ()
   "Display the filename of the current buffer."
   (interactive)
@@ -247,7 +251,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** kill buffer -no questions asked-
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (defun hrs/kill-current-buffer ()
   "Kill the current buffer without prompting."
   (interactive)
@@ -257,7 +261,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** sudoedit inside emacs
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (defun hrs/find-file-as-sudo ()
   (interactive)
   (let ((file-name (buffer-file-name)))
@@ -268,12 +272,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** replace 'yes or no' with 'y or n'
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 **** Split n Switch
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   ;; switch when split
   (defun hrs/split-window-below-and-switch ()
     "Split the window horizontally, then switch to the new pane."
@@ -292,7 +296,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** delete spaces around cursors
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (defun cycle-spacing-delete-newlines ()
     "Removes whitespace before and after the point."
     (interactive)
@@ -304,7 +308,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** jump to symbol like this
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (defun jump-to-symbol-internal (&optional backwardp)
     "Jumps to the next symbol near the point if such a symbol
   exists. If BACKWARDP is non-nil it jumps backward."
@@ -337,7 +341,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** duplicate thing
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (defun duplicate-thing (comment)
     "Duplicates the current line, or the region if active. If an argument is
   given, the duplicated region will be commented out."
@@ -355,21 +359,24 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** kbd to kill daemon
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "C-c x")
       (lambda ()
       (interactive)
       (save-buffers-kill-emacs t)))
 #+END_SRC
 
+#+RESULTS:
+| lambda | nil | (interactive) | (save-buffers-kill-emacs t) |
+
 *** TeX
 **** Tex Engine to use greek
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq-default TeX-engine 'xetex)
 #+END_SRC
 
 **** AucTeX preview size 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (set-default 'preview-scale-function 1)
   (defun update-org-latex-fragment-scale ()
     (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
@@ -378,12 +385,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** AucTeX master file
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq-default TeX-master nil)
 #+END_SRC
 
 **** Tex-view program selection
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq
    TeX-view-program-selection
    (quote
@@ -398,7 +405,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 *** file to mode asociation
 **** unix-conf-mode for systed units
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
  (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
  (add-to-list 'auto-mode-alist '("\\.timer\\'" . conf-unix-mode))
  (add-to-list 'auto-mode-alist '("\\.target\\'" . conf-unix-mode))
@@ -414,14 +421,14 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** conf-mode for files ending with rc
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (add-to-list 'auto-mode-alist '("/[^/]*rc" . conf-mode) t)
 #+END_SRC
 
 **** mutt support
 Set mail mode for mutt files and replace C-x # witn C-c C-c
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   ;; mail-mode when on mutt, probably will change to notmuch-message-mode
   (setq auto-mode-alist (append '(("/tmp/mutt.*" . mail-mode)) auto-mode-alist))
 
@@ -438,7 +445,7 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 #+END_SRC
 
 *** registrers
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (set-register ?t '(file . "~/org"))
   (set-register ?s '(file . "~/.mbsyncrc"))
   (set-register ?e '(file . "~/customs/emacs/orgconf.org"))
@@ -447,18 +454,18 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 
 *** Custom file
 **** Sane thing to do (disable it)
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   custom-file (make-temp-file "")
 #+END_SRC
 
 **** If i want to have it
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp  :tangle no
   (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file)
 #+END_SRC
 
 *** Autosaves
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (defvar emacs-autosave-directory
     (concat user-emacs-directory "autosaves/")
     "This variable dictates where to put auto saves. It is set to a
@@ -473,7 +480,7 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 #+END_SRC
 
 *** dired something
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (put 'dired-find-alternate-file 'disabled nil)
 #+END_SRC
 
@@ -481,28 +488,28 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 *** Org-Mode
 **** Display Settings
 ***** Pretty colors for code blocks
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-src-fontify-natively t)
 #+END_SRC
 
 ***** Bigger latex formulas
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 #+END_SRC
 
 **** Tabs act naturally in code snipets
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-src-tab-acts-natively t)
 #+END_SRC
 
 **** todo keywords
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "DONE(d)")))
 #+END_SRC
 
 **** todo faces
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-todo-keyword-faces
         '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
           ("WAITING" . "yellow")))
@@ -512,7 +519,7 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 Html export has a proble with fci-mode, here is the fix
 https://lists.gnu.org/archive/html/emacs-orgmode/2014-09/msg00777.html
 ***** latex packages
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (with-eval-after-load 'ox-latex  
     (add-to-list 'org-latex-classes
                  '("article"
@@ -587,13 +594,13 @@ https://lists.gnu.org/archive/html/emacs-orgmode/2014-09/msg00777.html
 I can use #+latex_compiler: xelatex instead of the following code
 But since the packages above require xelatex i'll stick with 
 this one
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-latex-pdf-process
      '("latexmk -pdflatex=xelatex -pdf %f"))
 #+END_SRC
 
 ***** export listings
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-latex-listings t)
   (setq org-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "[LaTeX]TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
   (setq org-export-latex-listings t)
@@ -601,7 +608,7 @@ this one
 #+END_SRC
       
 **** babel-langs
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)))
@@ -615,7 +622,7 @@ this one
 
 **** refile targets
 Set 1 to 2 if I want to include every sub* in files
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-refile-targets '((org-agenda-files :maxlevel . 1)
                              (nil :maxlevel . 9)
                              ))
@@ -625,17 +632,17 @@ Set 1 to 2 if I want to include every sub* in files
 
 *** org-agenda
 **** agenda files
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq org-agenda-files '("/home/gramanas/org"))
 #+END_SRC
 
 **** agenda kbd
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "C-c a g e") 'org-agenda)
 #+END_SRC
 
 *** expand region
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (require 'expand-region)
 
 (global-set-key (kbd "C->")  'er/expand-region)
@@ -643,7 +650,7 @@ Set 1 to 2 if I want to include every sub* in files
 #+END_SRC
 
 *** change inside
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (require 'change-inner)
   (global-set-key (kbd "M-i") 'change-inner)
   (global-set-key (kbd "M-o") 'change-outer)
@@ -651,26 +658,26 @@ Set 1 to 2 if I want to include every sub* in files
 
 *** smartparens
 **** Initialize
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (require 'smartparens-config)
 #+END_SRC
 
 *** embrace
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "C-,") #'embrace-commander)
 #+END_SRC
 
 *** Auto Complete
 **** Company
 ***** Initialize
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (add-to-list 'load-path "~/.emacs.d/elpa/company-20160829.1206")
   (require 'company)
   (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
 
 ***** Aggresive auto complete
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp  
 (setq company-idle-delay 0
       company-echo-delay 0
       company-dabbrev-downcase nil
@@ -682,19 +689,19 @@ Set 1 to 2 if I want to include every sub* in files
 
 ***** Keybindings
 ****** Manual Begin
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "C-;") 'company-manual-begin)
 #+END_SRC
 
 ****** Next-Prev
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-n") 'company-select-next)
     (define-key company-active-map (kbd "C-p") 'company-select-previous))
 #+END_SRC
 
 ***** helm interface
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (eval-after-load 'company
     '(progn
        (define-key company-mode-map (kbd "C-:") 'helm-company)
@@ -702,7 +709,7 @@ Set 1 to 2 if I want to include every sub* in files
 #+END_SRC
 
 ***** Style
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (setq company-tooltip-align-annotations t)
 
   (custom-set-faces
@@ -725,7 +732,7 @@ Set 1 to 2 if I want to include every sub* in files
 #+END_SRC
 
 ***** python
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (eval-after-load "company"
     '(add-to-list 'company-backends 'company-anaconda))
 
@@ -880,7 +887,7 @@ Set 1 to 2 if I want to include every sub* in files
   (helm-adaptive-mode 1)
 
 **** General
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (require 'helm)
   (require 'helm-config)
   ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
@@ -928,13 +935,13 @@ Set 1 to 2 if I want to include every sub* in files
 #+END_SRC
 
 **** M-x
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "M-x") 'helm-M-x)
   (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
 #+END_SRC
 
 **** Mini - buffers
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (global-set-key (kbd "C-x b") 'helm-mini)
 
 (setq helm-buffers-fuzzy-matching t
@@ -942,17 +949,17 @@ Set 1 to 2 if I want to include every sub* in files
 #+END_SRC
 
 **** find-files
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 #+END_SRC
 
 **** kill-ring
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 #+END_SRC
 
 *** flycheck
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   ;(add-hook 'after-init-hook #'global-flycheck-mode)
   ;(require 'helm-flycheck) ;; Not necessary if using ELPA package
   (eval-after-load 'flycheck
@@ -960,12 +967,12 @@ Set 1 to 2 if I want to include every sub* in files
 #+END_SRC
 
 *** flyspell
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 
 #+END_SRC
 
 *** Projectile
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (require 'helm-projectile)
   (helm-projectile-on)
   (setq projectile-completion-system 'helm)
@@ -973,7 +980,7 @@ Set 1 to 2 if I want to include every sub* in files
 
 *** ace mode
 **** jump around
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (autoload
   'ace-jump-mode
   "ace-jump-mode"
@@ -995,18 +1002,18 @@ Set 1 to 2 if I want to include every sub* in files
 #+END_SRC
 
 **** windows
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (global-set-key (kbd "C-x o") 'ace-window)
 #+END_SRC
 
 **** multiple cursors
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (global-set-key (kbd "C-c m") 'ace-mc-add-multiple-cursors)
 (global-set-key (kbd "C-c M") 'ace-mc-add-single-cursor)
 #+END_SRC
 
 *** fill column
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;; fci-mode enabled
 ;; (require 'fill-column-indicator)
 
@@ -1031,7 +1038,7 @@ relative line numbers (like Vim)
 #+END_SRC
 
 *** multiple cursors
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (require 'multiple-cursors)
   (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
   (global-set-key (kbd "C-c e l") 'mc/edit-lines)
@@ -1039,7 +1046,7 @@ relative line numbers (like Vim)
 
 *** magit
 **** magit-status
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "C-x m") 'magit-status)
 #+END_SRC
 
