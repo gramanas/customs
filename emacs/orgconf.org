@@ -385,6 +385,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** AucTeX master file
+     nil if i want to work with master file
 #+BEGIN_SRC emacs-lisp 
   (setq-default TeX-master nil)
 #+END_SRC
