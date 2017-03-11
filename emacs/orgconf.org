@@ -506,17 +506,18 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 **** todo keywords
 #+BEGIN_SRC emacs-lisp 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "|" "CANCELED(c)" "DONE(d)")))
+        '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "STUDY(y)" "|" "CANCELED(c)" "DONE(d)")))
 #+END_SRC
-
-#+RESULTS:
-| sequence | TODO(t) | WAITING(w) | STARTED(s) | CANCELED(c) | DONE(d) |
 
 **** todo faces
 #+BEGIN_SRC emacs-lisp 
   (setq org-todo-keyword-faces
-        '(("TODO" . org-warning) ("STARTED" . (:foreground "blue" :weight bold))
-          ("WAITING" . "yellow") ("CANCELED" . (:foreground "black" :weight bold))))
+        '(("TODO" . (:foreground "green" :weight bold)) 
+          ("STARTED" . (:foreground "cadet blue" :weight bold))
+          ("STUDY" . (:foreground "snow" :weight bold))
+          ("WAITING" . (:foreground "yellow" :weight bold)) 
+          ("CANCELED" . (:foreground "black" :weight bold))
+          ("DONE" . (:foreground "dim gray" :weight bold))))
 #+END_SRC
 
 **** export
