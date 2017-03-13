@@ -1055,6 +1055,11 @@ relative line numbers (like Vim)
   (global-set-key (kbd "C-x m") 'magit-status)
 #+END_SRC
 
+*** iedit mode
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c ;") 'iedit-mode)
+#+END_SRC
+
 ** hooks
 *** prog mode
 #+BEGIN_SRC emacs-lisp
