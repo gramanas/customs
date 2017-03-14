@@ -385,6 +385,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** AucTeX master file
+     nil if i want to work with master file
 #+BEGIN_SRC emacs-lisp 
   (setq-default TeX-master nil)
 #+END_SRC
@@ -505,16 +506,26 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 **** todo keywords
 #+BEGIN_SRC emacs-lisp 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "DONE(d)" "CANCELED(c)")))
+        '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "STUDY(y)" "|" "CANCELED(c)" "DONE(d)")))
 #+END_SRC
 
 **** todo faces
 #+BEGIN_SRC emacs-lisp 
   (setq org-todo-keyword-faces
+
+c<<<<<<< HEAD
         '(("TODO" . (:foreground "lime green" :weight "bold")) 
           ("STARTED" . (:foreground "blue" :weight "bold"))
           ("WAITING" . (:foreground "yellow" :weight "bold"))
           ("CANCELED" . (:foreground "black" :weight "bold"))))
+=======
+        '(("TODO" . (:foreground "green" :weight bold)) 
+          ("STARTED" . (:foreground "cadet blue" :weight bold))
+          ("STUDY" . (:foreground "snow" :weight bold))
+          ("WAITING" . (:foreground "yellow" :weight bold)) 
+          ("CANCELED" . (:foreground "black" :weight bold))
+          ("DONE" . (:foreground "dim gray" :weight bold))))
+>>>>>>> 2d313e541fb3d592741dd19fab277a0111bd974a
 #+END_SRC
 
 **** export
@@ -666,7 +677,7 @@ Set 1 to 2 if I want to include every sub* in files
 
 *** embrace
 #+BEGIN_SRC emacs-lisp 
-  (global-set-key (kbd "C-,") #'embrace-commander)
+  (global-set-key (kbd "C-c C-'") #'embrace-commander)
 #+END_SRC
 
 *** Auto Complete
@@ -1052,6 +1063,11 @@ relative line numbers (like Vim)
   (global-set-key (kbd "C-x m") 'magit-status)
 #+END_SRC
 
+*** iedit mode
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c ;") 'iedit-mode)
+#+END_SRC
+
 ** hooks
 *** prog mode
 #+BEGIN_SRC emacs-lisp
@@ -1060,10 +1076,9 @@ relative line numbers (like Vim)
   (add-hook 'prog-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'flycheck-mode)
 #+END_SRC
-
 * Key Bindings
 | Mode   | kbd       | action      |
 |--------+-----------+-------------|
 | Global | C-x k     | Kill buffer |
 | Global | C-c C-c s | Sudoedit    |
-|        |           |             |
+
