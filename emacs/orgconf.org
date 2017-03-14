@@ -1068,6 +1068,7 @@ relative line numbers (like Vim)
   (add-hook 'prog-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'flycheck-mode)
 #+END_SRC
+
 * Key Bindings
 | Mode   | kbd       | action      |
 |--------+-----------+-------------|
