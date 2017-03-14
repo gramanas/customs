@@ -512,20 +512,12 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 **** todo faces
 #+BEGIN_SRC emacs-lisp 
   (setq org-todo-keyword-faces
-
-c<<<<<<< HEAD
-        '(("TODO" . (:foreground "lime green" :weight "bold")) 
-          ("STARTED" . (:foreground "blue" :weight "bold"))
-          ("WAITING" . (:foreground "yellow" :weight "bold"))
-          ("CANCELED" . (:foreground "black" :weight "bold"))))
-=======
         '(("TODO" . (:foreground "green" :weight bold)) 
           ("STARTED" . (:foreground "cadet blue" :weight bold))
           ("STUDY" . (:foreground "snow" :weight bold))
           ("WAITING" . (:foreground "yellow" :weight bold)) 
           ("CANCELED" . (:foreground "black" :weight bold))
           ("DONE" . (:foreground "dim gray" :weight bold))))
->>>>>>> 2d313e541fb3d592741dd19fab277a0111bd974a
 #+END_SRC
 
 **** export
