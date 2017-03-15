@@ -102,6 +102,7 @@ mailboxes "+## gmail ######################"\
 	  +.arch\
 	  +.emacs\
 	  +.TeX_live\
+	  +.Mixxx\
 	  +.Diktyosi_thess\
 	  +.AutoCsd\
 	  +.sent\
