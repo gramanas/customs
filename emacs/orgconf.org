@@ -759,101 +759,10 @@ Set 1 to 2 if I want to include every sub* in files
        (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
 #+END_SRC
 
-***** wow
-#+BEGIN_SRC emacs-lisp :tangle no
-  (defvar-local company-simple-complete--previous-prefix nil)
-  (defvar-local company-simple-complete--before-complete-point nil)
-
-  (defun company-simple-complete-frontend (command)
-    (when (or (eq command 'show)
-              (and (eq command 'update)
-                   (not (equal company-prefix company-simple-complete--previous-prefix))))
-      (setq company-selection -1
-            company-simple-complete--previous-prefix company-prefix
-            company-simple-complete--before-complete-point nil)))
-
-  (defun company-simple-complete-next (&optional arg)
-    (interactive "p")
-    (company-select-next arg)
-    (company-simple-complete//complete-selection-and-stay))
-
-  (defun company-simple-complete-previous (&optional arg)
-    (interactive "p")
-    (company-select-previous arg)
-    (company-simple-complete//complete-selection-and-stay))
-
-  (defun company-simple-complete//complete-selection-and-stay ()
-    (if (cdr company-candidates)
-        (when (company-manual-begin)
-          (when company-simple-complete--before-complete-point
-            (delete-region company-simple-complete--before-complete-point (point)))
-          (setq company-simple-complete--before-complete-point (point))
-          (unless (eq company-selection -1)
-            (company--insert-candidate (nth company-selection company-candidates)))
-          (company-call-frontends 'update)
-          (company-call-frontends 'post-command))
-      (company-complete-selection)))
-
-  (defun company-simple-complete-selection-and-quit (&optional arg)
-    (interactive "p")
-    (when (company-manual-begin)
-      (when company-simple-complete--before-complete-point
-        (delete-region company-simple-complete--before-complete-point (point)))
-      (setq company-simple-complete--before-complete-point (point))
-      (unless (eq company-selection -1)
-        (company-complete-selection))))
-
-  (defun company-simple-complete-number-and-quit (n)
-    (interactive "p")
-    (if (cdr company-candidates)
-        (when (company-manual-begin)
-          (when company-simple-complete--before-complete-point
-            (delete-region company-simple-complete--before-complete-point (point)))
-          (setq company-simple-complete--before-complete-point (point))
-          (company-complete-number n)
-          (unless (eq company-selection -1)
-            (company-complete-selection)))))
-
-  (defadvice company-set-selection (around allow-no-selection (selection &optional force-update))
-    "Allow selection to be -1"
-    (setq selection
-          ;; TODO deal w/ wrap-around
-          (if company-selection-wrap-around
-              (mod selection company-candidates-length)
-            (max -1 (min (1- company-candidates-length) selection))))
-    (when (or force-update (not (equal selection company-selection)))
-      (setq company-selection selection
-            company-selection-changed t)
-      (company-call-frontends 'update)))
-
-  (defadvice company-tooltip--lines-update-offset (before allow-no-selection (selection _num-lines _limit))
-    "Allow selection to be -1"
-    (when (eq selection -1)
-      (ad-set-arg 0 0)))
-
-  (defadvice company-tooltip--simple-update-offset (before allow-no-selection (selection _num-lines limit))
-    "Allow selection to be -1"
-    (when (eq selection -1)
-      (ad-set-arg 0 0)))
-
-  (with-eval-after-load 'company
-    (define-key company-active-map [tab] 'company-simple-complete-next)
-    (define-key company-active-map (kbd "TAB") 'company-simple-complete-next)
-    (define-key company-active-map (kbd "<S-tab>") 'company-simple-complete-previous)
-    (define-key company-active-map (kbd "<backtab>") 'company-simple-complete-previous)
-    (define-key company-active-map (kbd "<C-return>") 'company-simple-complete-selection-and-quit)
-      (dotimes (i 10)
-        (define-key company-active-map (read-kbd-macro (format "M-%d" i)) 'company-simple-complete-number-and-quit))
-    (define-key company-active-map (kbd "RET") nil)
-    (define-key company-active-map (kbd "<return>") nil)
-
-    (put 'company-simple-complete-next 'company-keep t)
-    (put 'company-simple-complete-previous 'company-keep t)
-    (setq company-require-match nil)
-    (ad-activate 'company-set-selection)
-    (ad-activate 'company-tooltip--simple-update-offset)
-    (ad-activate 'company-tooltip--lines-update-offset)
-    (add-to-list 'company-frontends 'company-simple-complete-frontend))
+***** yasnippet
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "company"
+    '(add-to-list 'company-backends 'company-yasnippet))
 #+END_SRC
 
 **** ac
@@ -963,6 +872,51 @@ Set 1 to 2 if I want to include every sub* in files
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 #+END_SRC
 
+*** ggtags
+**** No helm
+#+BEGIN_SRC emacs-lisp
+;  (require 'ggtags)
+;  (add-hook 'c-mode-common-hook
+;            (lambda ()
+;              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+;                (ggtags-mode 1))))
+;
+;  (define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+;  (define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+;  (define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+;  (define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+;  (define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+;  (define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
+;
+;  (define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
+#+END_SRC
+
+**** helm
+#+BEGIN_SRC emacs-lisp
+  (setq
+   helm-gtags-ignore-case t
+   helm-gtags-auto-update t
+   helm-gtags-use-input-at-cursor t
+   helm-gtags-pulse-at-cursor t
+   helm-gtags-prefix-key "\C-cg"
+   helm-gtags-suggested-key-mapping t
+   )
+
+  (require 'helm-gtags)
+  ;; Enable helm-gtags-mode
+  (add-hook 'dired-mode-hook 'helm-gtags-mode)
+  (add-hook 'eshell-mode-hook 'helm-gtags-mode)
+  (add-hook 'c-mode-hook 'helm-gtags-mode)
+  (add-hook 'c++-mode-hook 'helm-gtags-mode)
+  (add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+  (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+  (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
+  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+#+END_SRC
 *** flycheck
 #+BEGIN_SRC emacs-lisp 
   ;(add-hook 'after-init-hook #'global-flycheck-mode)
@@ -1042,6 +996,12 @@ relative line numbers (like Vim)
   (linum-relative-on)
 #+END_SRC
 
+*** yasnippet
+#+BEGIN_SRC emacs-lisp
+  (require 'yasnippet)
+  (yas-global-mode 1)
+#+END_SRC
+
 *** multiple cursors
 #+BEGIN_SRC emacs-lisp 
   (require 'multiple-cursors)
@@ -1068,6 +1028,7 @@ relative line numbers (like Vim)
   (add-hook 'prog-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'flycheck-mode)
 #+END_SRC
+
 
 * Key Bindings
 | Mode   | kbd       | action      |
