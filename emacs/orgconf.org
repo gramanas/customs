@@ -112,7 +112,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 ***** base-16
-#+BEGIN_SRC emacs-lisp :tangle yes :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent
   (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/base16-theme-20170317.1130")
   (load-theme 'base16-chalk t)
 #+END_SRC

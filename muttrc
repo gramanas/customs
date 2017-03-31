@@ -72,7 +72,7 @@ set header_cache=~/.mutt/cache
 set mailcap_path    = ~/.mutt/mailcap
 
 auto_view text/html
-alternative_order text/plain text/html
+alternative_order text/html text/plain
 #toggle alternative order of reading (prefer html over text)
 
 macro pager ,@aot= "\
@@ -103,6 +103,7 @@ mailboxes "+## gmail ######################"\
 	  +.emacs\
 	  +.TeX_live\
 	  +.Mixxx\
+          +.idm\
 	  +.Diktyosi_thess\
 	  +.AutoCsd\
 	  +.sent\
