@@ -673,6 +673,11 @@ Set 1 to 2 if I want to include every sub* in files
   (require 'smartparens-config)
 #+END_SRC
 
+*** C/C++
+#+BEGIN_SRC emacs-lisp
+  (setq-default c-basic-offset 4)
+#+END_SRC
+
 *** embrace
 #+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "C-c C-'") #'embrace-commander)
