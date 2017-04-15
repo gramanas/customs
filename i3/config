@@ -246,6 +246,8 @@ bindsym control+XF86AudioLowerVolume exec --no-startup-id cmus-remote -r; exec p
 bindsym shift+XF86AudioRaiseVolume exec --no-startup-id cmus-remote -k +5; exec pkill -SIGRTMIN+10 i3blocks # seek next
 bindsym shift+XF86AudioLowerVolume exec --no-startup-id cmus-remote -k -5; exec pkill -SIGRTMIN+10 i3blocks # seek prev
 
+bindsym XF86Calculator exec --no-startup-id urxvt-server-client -e genius
+
 # Sreen brightness controls
 #bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 10; exec pkill -SIGRTMIN+12 i3blocks # increase screen brightness
 #bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10; exec pkill -SIGRTMIN+12 i3blocks # decrease screen brightness
@@ -262,9 +264,9 @@ bar {
 #pinky
 #    	    focused_workspace  #111111 #111111 #ff1493
 #bw
-  	    focused_workspace  #333333 #333333 #dddddd
+  	    focused_workspace  #444444 #444444 #dddddd
 	    active_workspace   #111111 #111111 #dddddd
-            inactive_workspace #111111 #111111 #444444
+            inactive_workspace #111111 #111111 #888888
             urgent_workspace   #2f343a #900000 #ffffff
             binding_mode       #2f343a #900000 #ffffff
 	    }
