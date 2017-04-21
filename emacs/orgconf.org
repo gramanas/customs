@@ -3,7 +3,7 @@
 *** Trivial Stuff
 #+BEGIN_SRC emacs-lisp
   (setq default-input-method "greek")  
-  ;; (semantic-mode 1)
+  (semantic-mode 1)
   (menu-bar-mode -1)
   (column-number-mode t)
   (global-linum-mode -1)
@@ -796,6 +796,16 @@ Set 1 to 2 if I want to include every sub* in files
   (define-key global-map (kbd "M-]") (function rtags-location-stack-forward))
 #+END_SRC
 
+*** gdb
+#+BEGIN_SRC emacs-lisp
+  (setq
+   ;; use gdb-many-windows by default
+   gdb-many-windows t
+
+   ;; Non-nil means display source file containing the main routine at startup
+   gdb-show-main t)
+#+END_SRC
+
 *** Auto Complete
 **** Company
 ***** Initialize
@@ -819,6 +829,7 @@ Set 1 to 2 if I want to include every sub* in files
   (push 'company-files company-backends)
   (push 'company-clang company-backends)
   (push 'company-rtags company-backends)
+  (push 'company-semantic company-backends)
 #+END_SRC
 
 ***** Aggresive auto complete
@@ -1067,6 +1078,10 @@ relative line numbers (like Vim)
   (add-hook 'python-mode-hook 'anaconda-mode)
 #+END_SRC
 
+*** C++
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+#+END_SRC
 *** new frame
 #+BEGIN_SRC emacs-lisp
   (defun my-frame-setup ()
