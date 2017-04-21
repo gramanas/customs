@@ -70,7 +70,7 @@ mode "$mode_launcher"{
 }
 
 exec_always --no-startup-id nm-applet
-exec_always --no-startup-id feh --bg-fill ~/customs/wallpaper.png
+exec_always --no-startup-id feh --bg-fill ~/.config/wallpaper.png
 
 
 # Pulse Audio controls
