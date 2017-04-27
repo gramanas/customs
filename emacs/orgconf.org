@@ -529,6 +529,19 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 #+END_SRC
 
 ** Package Configurations
+*** smart-mode-line
+#+BEGIN_SRC emacs-lisp
+  (setq sml/no-confirm-load-theme t)
+  (setq sml/theme 'dark)
+  (sml/setup)
+  (setq sml/replace-regexp-list t)
+  (add-to-list 'sml/replacer-regexp-list '("^~/Git-Projects/" ":Git:") t)
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
 *** modalka
 **** Init
 #+BEGIN_SRC emacs-lisp
@@ -1060,7 +1073,7 @@ relative line numbers (like Vim)
 *** yasnippet
 #+BEGIN_SRC emacs-lisp
   (require 'yasnippet)
-  (yas-global-mode 1)
+;  (yas-global-mode 1)
 #+END_SRC
 
 *** multiple cursors
@@ -1134,6 +1147,7 @@ relative line numbers (like Vim)
   (add-hook 'prog-mode-hook 'projectile-mode)
   (add-hook 'prog-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'flycheck-mode)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
 #+END_SRC
 
 *** python
@@ -1145,6 +1159,7 @@ relative line numbers (like Vim)
 #+BEGIN_SRC emacs-lisp
   (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
 #+END_SRC
+
 *** new frame
 #+BEGIN_SRC emacs-lisp
   (defun my-frame-setup ()
@@ -1158,4 +1173,4 @@ relative line numbers (like Vim)
 |--------+-----------+-------------|
 | Global | C-x k     | Kill buffer |
 | Global | C-c C-c s | Sudoedit    |
-
+|        |           |             |
