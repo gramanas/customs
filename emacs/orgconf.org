@@ -112,7 +112,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 ***** base-16
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :tangle no :results output silent
   (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/base16-theme-20170317.1130")
   (load-theme 'base16-chalk t)
 #+END_SRC
@@ -136,7 +136,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 ***** Ample
-#+BEGIN_SRC emacs-lisp :tangle no :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent
   (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/ample-theme-20161213.912")
   (load-theme 'ample t)
 #+END_SRC
@@ -208,6 +208,61 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 *** Utils
+**** ga
+***** kill-word
+#+BEGIN_SRC emacs-lisp 
+  (defun ga/kill-word (&optional arg)
+    "Kills the word on point. Using it with a numerical prefix
+  results in killing n words backwards from point"
+    (interactive "p")
+    (backward-word arg)
+    (mark-word arg)
+    (kill-region (region-beginning) (region-end))
+    )
+
+  (global-set-key (kbd "C-c w") 'ga/kill-word)
+#+END_SRC
+
+***** kill-line
+#+BEGIN_SRC emacs-lisp
+  (defun ga/kill-line (&optional arg)
+    "Kills the line on point. Using it with a numerical prefix
+  results in killing n lines forward from point"
+    (interactive "p")
+    (move-beginning-of-line nil)
+    (let ((kill-whole-line 1))
+      (kill-line arg))
+    )
+
+  (global-set-key (kbd "C-c l") 'ga/kill-line)
+#+END_SRC
+
+***** open-line-above
+#+BEGIN_SRC emacs-lisp
+  (defun ga/open-line-above (&optional arg)
+    "Kills the word on point. Using it with a numerical prefix
+  (region-end)sults in killing n words backwards from point"
+    (interactive "p")
+    (move-beginning-of-line nil)
+    (org-open-line arg)
+    )
+
+  (global-set-key (kbd "C-c O") 'ga/open-line-above)
+#+END_SRC
+
+***** open-line-below
+#+BEGIN_SRC emacs-lisp
+  (defun ga/open-line-below (&optional arg)
+    "Kills the word on point. Using it with a numerical prefix
+  (region-end)sults in killing n words backwards from point"
+    (interactive "p")
+    (move-end-of-line nil)
+    (newline arg)
+    )
+
+  (global-set-key (kbd "C-c o") 'ga/open-line-below)
+#+END_SRC
+
 **** resize windows
 #+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
@@ -235,18 +290,6 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 **** linum
 #+BEGIN_SRC emacs-lisp :tangle no
 ;; '(global-linum-mode t)
-#+END_SRC
-
-**** kill-word
-#+BEGIN_SRC emacs-lisp 
-  (fset 'Kill\ word
-        (lambda (&optional arg) 
-          "Keyboard macro." 
-        (interactive "p") 
-        (kmacro-exec-ring-item 
-         (quote ([134217848 101 114 47 109 97 114 107 45 119 111 100 backspace 114 100 return delete] 0 "%d")) arg)))
-
-  (global-set-key (kbd "C-c w") 'Kill\ word)
 #+END_SRC
 
 **** view buffer name
@@ -314,39 +357,6 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
       (cycle-spacing -1)))
 
   (global-set-key (kbd "C-c j") 'cycle-spacing-delete-newlines)
-#+END_SRC
-
-**** jump to symbol like this
-#+BEGIN_SRC emacs-lisp 
-  (defun jump-to-symbol-internal (&optional backwardp)
-    "Jumps to the next symbol near the point if such a symbol
-  exists. If BACKWARDP is non-nil it jumps backward."
-    (let* ((point (point))
-           (bounds (find-tag-default-bounds))
-           (beg (car bounds)) (end (cdr bounds))
-           (str (isearch-symbol-regexp (find-tag-default)))
-           (search (if backwardp 'search-backward-regexp
-                     'search-forward-regexp)))
-      (goto-char (if backwardp beg end))
-      (funcall search str nil t)
-      (cond ((<= beg (point) end) (goto-char point))
-            (backwardp (forward-char (- point beg)))
-            (t  (backward-char (- end point))))))
-
-  (defun jump-to-previous-like-this ()
-    "Jumps to the previous occurrence of the symbol at point."
-    (interactive)
-    (jump-to-symbol-internal t))
-
-  (defun jump-to-next-like-this ()
-    "Jumps to the next occurrence of the symbol at point."
-    (interactive)
-    (jump-to-symbol-internal))
-
-  (global-set-key (kbd "M-p") 'jump-to-previous-like-this)
-  (global-set-key (kbd "M-n") 'jump-to-next-like-this)
-  (global-set-key (kbd "M-.") 'jump-to-next-like-this)
-  (global-set-key (kbd "M-,") 'jump-to-previous-like-this)
 #+END_SRC
 
 **** duplicate thing
@@ -455,6 +465,8 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 #+BEGIN_SRC emacs-lisp 
   (set-register ?t '(file . "~/org"))
   (set-register ?s '(file . "~/.mbsyncrc"))
+  (set-register ?d '(file . "~/Code/dbms_technology"))
+  (set-register ?m '(file . "~/Code/mixxx"))
   (set-register ?e '(file . "~/customs/emacs/orgconf.org"))
   (set-register ?C '(file . "~/customs/"))
 #+END_SRC
@@ -492,6 +504,57 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 #+END_SRC
 
 ** Package Configurations
+*** modalka
+**** Init
+#+BEGIN_SRC emacs-lisp
+  (require 'modalka)
+
+  (global-set-key (kbd "<return>") #'modalka-mode)
+  (setq-default cursor-type '(bar . 1))
+  (setq modalka-cursor-type 'box)
+#+END_SRC
+
+**** kbd's
+#+BEGIN_SRC emacs-lisp
+  (modalka-define-kbd "W" "M-w")
+  (modalka-define-kbd "Y" "M-y")
+  (modalka-define-kbd "a" "C-a")
+  (modalka-define-kbd "b" "C-b")
+  (modalka-define-kbd "e" "C-e")
+  (modalka-define-kbd "d" "C-d")
+  (modalka-define-kbd "o" "C-c o")
+  (modalka-define-kbd "O" "C-c O")
+  (modalka-define-kbd "c d" "C-c d")
+  (modalka-define-kbd "c c" "C-c c")
+  (modalka-define-kbd "c j" "C-c j")
+  (modalka-define-kbd "c w" "C-c w")
+  (modalka-define-kbd "k k" "C-c l")
+  (modalka-define-kbd "k l" "C-k")
+  (modalka-define-kbd "k w" "C-c w")
+  (modalka-define-kbd "f" "C-f")
+  (modalka-define-kbd "m" "C-m")
+  (modalka-define-kbd "g" "C-g")
+  (modalka-define-kbd "n" "C-n")
+  (modalka-define-kbd "p" "C-p")
+  (modalka-define-kbd "w" "C-w")
+  (modalka-define-kbd "y" "C-y")
+  (modalka-define-kbd "SPC" "C-SPC")
+
+  (modalka-define-kbd "0" "C-0")
+  (modalka-define-kbd "1" "C-1")
+  (modalka-define-kbd "2" "C-2")
+  (modalka-define-kbd "3" "C-3")
+  (modalka-define-kbd "4" "C-4")
+  (modalka-define-kbd "5" "C-5")
+  (modalka-define-kbd "6" "C-6")
+  (modalka-define-kbd "7" "C-7")
+  (modalka-define-kbd "8" "C-8")
+  (modalka-define-kbd "9" "C-9")
+#+END_SRC
+
+#+RESULTS:
+: modalka-translation
+
 *** Org-Mode
 **** Display Settings
 ***** Pretty colors for code blocks
@@ -678,11 +741,6 @@ Set 1 to 2 if I want to include every sub* in files
   (setq-default c-basic-offset 4)
 #+END_SRC
 
-*** embrace
-#+BEGIN_SRC emacs-lisp 
-  (global-set-key (kbd "C-c C-'") #'embrace-commander)
-#+END_SRC
-
 *** Helm
 **** COMMENT noob config
   (require 'helm)
@@ -787,13 +845,13 @@ Set 1 to 2 if I want to include every sub* in files
 
 **** keybindings
 #+BEGIN_SRC emacs-lisp
-  (define-key global-map (kbd "M-.") (function rtags-find-symbol-at-point))
-  (define-key global-map (kbd "M-,") (function rtags-find-references-at-point))
-  (define-key global-map (kbd "M-;") (function rtags-find-file))
-  (define-key global-map (kbd "C-.") (function rtags-find-symbol))
-  (define-key global-map (kbd "C-,") (function rtags-find-references))
-  (define-key global-map (kbd "M-[") (function rtags-location-stack-back))
-  (define-key global-map (kbd "M-]") (function rtags-location-stack-forward))
+  (define-key c++-mode-map (kbd "M-.") (function rtags-find-symbol-at-point))
+  (define-key c++-mode-map (kbd "M-,") (function rtags-find-references-at-point))
+  (define-key c++-mode-map (kbd "M-;") (function rtags-find-file))
+  (define-key c++-mode-map (kbd "C-.") (function rtags-find-symbol))
+  (define-key c++-mode-map (kbd "C-,") (function rtags-find-references))
+  (define-key c++-mode-map (kbd "M-[") (function rtags-location-stack-back))
+  (define-key c++-mode-map (kbd "M-]") (function rtags-location-stack-forward))
 #+END_SRC
 
 *** gdb
@@ -901,23 +959,8 @@ Set 1 to 2 if I want to include every sub* in files
 
 ***** yasnippet
 #+BEGIN_SRC emacs-lisp
-  (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-yasnippet))
-#+END_SRC
-
-**** ac
-#+BEGIN_SRC emacs-lisp
-;;  (add-hook 'after-init-hook #'auto-complete-mode)
-;;  (ac-config-default)
-;;  (setq ac-use-menu-map t)
-;;  (ac-set-trigger-key "TAB")
-;;  (setq ac-auto-start 3)
-;;  (set-face-background 'ac-candidate-face "color-235")
-;;  (set-face-underline 'ac-candidate-face "color-235")
-;;  (set-face-foreground 'ac-candidate-face "#008b8b")
-;;  (set-face-background 'ac-completion-face "brightblack")
-;;  (set-face-underline 'ac-completion-face "color-235")
-;;  (set-face-foreground 'ac-completion-face "#008b8b")
+;  (eval-after-load "company"
+;    '(add-to-list 'company-backends 'company-yasnippet))
 #+END_SRC
 
 *** flycheck
@@ -956,11 +999,6 @@ Set 1 to 2 if I want to include every sub* in files
 (eval-after-load "ace-jump-mode"
   '(ace-jump-mode-enable-mark-sync))
 (global-set-key (kbd "C-c M-c") 'ace-jump-mode-pop-mark)
-#+END_SRC
-
-**** windows
-#+BEGIN_SRC emacs-lisp 
-(global-set-key (kbd "C-x o") 'ace-window)
 #+END_SRC
 
 **** multiple cursors
