@@ -528,6 +528,16 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
   (put 'dired-find-alternate-file 'disabled nil)
 #+END_SRC
 
+*** eshell
+**** clear
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/clear ()
+    "Clear the eshell buffer."
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (eshell-send-input)))
+#+END_SRC
+
 ** Package Configurations
 *** smart-mode-line
 #+BEGIN_SRC emacs-lisp
@@ -536,18 +546,14 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
   (sml/setup)
   (setq sml/replace-regexp-list t)
   (add-to-list 'sml/replacer-regexp-list '("^~/Git-Projects/" ":Git:") t)
-
 #+END_SRC
-
-#+RESULTS:
-: t
 
 *** modalka
 **** Init
 #+BEGIN_SRC emacs-lisp
   (require 'modalka)
 
-  (global-set-key (kbd "<return>") #'modalka-mode)
+  (global-set-key (kbd "<escape>") #'modalka-mode)
   (setq-default cursor-type '(bar . 1))
   (setq modalka-cursor-type 'box)
 #+END_SRC
@@ -611,9 +617,10 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 #+END_SRC
 
 **** todo keywords
+‘!’ (for a timestamp) or ‘@’ (for a note with timestamp)
 #+BEGIN_SRC emacs-lisp 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "STUDY(y)" "|" "CANCELED(c)" "DONE(d)")))
+        '((sequence "TODO(t)" "WAITING(w@/!)" "STARTED(s@/!)" "STUDY(y)" "|" "CANCELED(c@/!)" "DONE(d@/!)")))
 #+END_SRC
 
 **** todo faces
@@ -718,7 +725,7 @@ this one
   (setq org-export-latex-listings t)
   (setq org-export-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
 #+END_SRC
-      
+
 **** babel-langs
 #+BEGIN_SRC emacs-lisp 
   (org-babel-do-load-languages
@@ -741,6 +748,16 @@ Set 1 to 2 if I want to include every sub* in files
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
   (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 #+END_SRC
+
+**** archiving
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-done 'note)
+
+  (setq org-archive-location "/home/gramanas/org/archive.org::datetree/")
+#+END_SRC
+
+#+RESULTS:
+: /home/gramanas/org/archive.org::datetree/
 
 *** org-agenda
 **** agenda files
@@ -772,6 +789,14 @@ Set 1 to 2 if I want to include every sub* in files
 **** Initialize
 #+BEGIN_SRC emacs-lisp 
   (require 'smartparens-config)
+#+END_SRC
+
+**** Config
+No more highlight!!!
+#+BEGIN_SRC emacs-lisp
+  (setq sp-highlight-pair-overlay nil)
+  (setq sp-highlight-wrap-overlay nil)
+  (setq sp-highlight-wrap-tag-overlay nil)
 #+END_SRC
 
 *** C/C++
@@ -812,9 +837,6 @@ Set 1 to 2 if I want to include every sub* in files
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-
-  (when (executable-find "curl")
-    (setq helm-google-suggest-use-curl-p t)) 
 
   (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
         helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
@@ -863,12 +885,17 @@ Set 1 to 2 if I want to include every sub* in files
 
 **** find-files
 #+BEGIN_SRC emacs-lisp 
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
 #+END_SRC
 
 **** kill-ring
 #+BEGIN_SRC emacs-lisp 
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+#+END_SRC
+
+**** recentf
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-r") 'helm-recentf)
 #+END_SRC
 
 *** rtags
@@ -942,7 +969,7 @@ Set 1 to 2 if I want to include every sub* in files
 ***** Keybindings
 ****** Manual Begin
 #+BEGIN_SRC emacs-lisp 
-  (global-set-key (kbd "C-;") 'company-manual-begin)
+  (global-set-key (kbd "C-:") 'company-manual-begin)
 #+END_SRC
 
 ****** Next-Prev
@@ -1016,33 +1043,28 @@ Set 1 to 2 if I want to include every sub* in files
   (setq projectile-completion-system 'helm)
 #+END_SRC
 
-*** ace mode
-**** jump around
-#+BEGIN_SRC emacs-lisp 
-(autoload
-  'ace-jump-mode
-  "ace-jump-mode"
-  "Emacs quick move minor mode"
-  t)
-
-(global-set-key (kbd "C-c s") 'ace-jump-char-mode)
-
-;enable a more powerful jump back function from ace jump mode
-
-(autoload
-  'ace-jump-mode-pop-mark
-  "ace-jump-mode"
-  "Ace jump back:-)"
-  t)
-(eval-after-load "ace-jump-mode"
-  '(ace-jump-mode-enable-mark-sync))
-(global-set-key (kbd "C-c M-c") 'ace-jump-mode-pop-mark)
+*** ace-window
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-p") 'ace-window)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-background nil)
 #+END_SRC
 
-**** multiple cursors
-#+BEGIN_SRC emacs-lisp 
-(global-set-key (kbd "C-c m") 'ace-mc-add-multiple-cursors)
-(global-set-key (kbd "C-c M") 'ace-mc-add-single-cursor)
+*** avy
+**** setup
+#+BEGIN_SRC emacs-lisp
+  (setq avy-timeout-seconds 0.8)
+  (setq avy-all-windows nil)
+
+  (setq avy-styles-alist 
+        '((avy-goto-char-2 . pre)
+          (avy-goto-char . pre)))
+#+END_SRC
+
+**** jumping
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-;") 'avy-goto-word-or-subword-1)
+(global-set-key (kbd "M-'") 'avy-goto-char)
 #+END_SRC
 
 *** fill column
