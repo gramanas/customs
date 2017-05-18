@@ -488,7 +488,7 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 
 *** registrers
 #+BEGIN_SRC emacs-lisp 
-  (set-register ?t '(file . "~/org"))
+  (set-register ?o '(file . "~/org"))
   (set-register ?s '(file . "~/.mbsyncrc"))
   (set-register ?d '(file . "~/Code/dbms_technology"))
   (set-register ?m '(file . "~/Code/mixxx"))
@@ -552,10 +552,6 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 **** Init
 #+BEGIN_SRC emacs-lisp
   (require 'modalka)
-
-  (global-set-key (kbd "<escape>") #'modalka-mode)
-  (setq-default cursor-type '(bar . 1))
-  (setq modalka-cursor-type 'box)
 #+END_SRC
 
 **** kbd's
@@ -912,9 +908,6 @@ No more highlight!!!
 #+BEGIN_SRC emacs-lisp
   (define-key c++-mode-map (kbd "M-.") (function rtags-find-symbol-at-point))
   (define-key c++-mode-map (kbd "M-,") (function rtags-find-references-at-point))
-  (define-key c++-mode-map (kbd "M-;") (function rtags-find-file))
-  (define-key c++-mode-map (kbd "C-.") (function rtags-find-symbol))
-  (define-key c++-mode-map (kbd "C-,") (function rtags-find-references))
   (define-key c++-mode-map (kbd "M-[") (function rtags-location-stack-back))
   (define-key c++-mode-map (kbd "M-]") (function rtags-location-stack-forward))
 #+END_SRC
@@ -942,17 +935,18 @@ No more highlight!!!
 
 ***** backends
 #+BEGIN_SRC emacs-lisp
-  (setq company-backends ())
-  (push 'company-dabbrev company-backends)
-  (push 'company-keywords company-backends)
-  (push 'company-dabbrev-code company-backends)
-  (push 'company-anaconda company-backends)
-  (push 'company-yasnippet company-backends)
-  (push 'company-capf company-backends)
-  (push 'company-files company-backends)
-  (push 'company-clang company-backends)
-  (push 'company-rtags company-backends)
-  (push 'company-semantic company-backends)
+    (setq company-backends ())
+    (push 'company-dabbrev company-backends)
+    (push 'company-keywords company-backends)
+    (push 'company-dabbrev-code company-backends) 
+    ; (push 'company-anaconda company-backends)
+    (push 'company-yasnippet company-backends)
+    (push 'company-capf company-backends)
+    (push 'company-files company-backends)
+    (push 'company-clang company-backends)
+    (push 'company-irony company-backends)
+      ; (push 'company-rtags company-backends)
+    ;  (push 'company-semantic company-backends)
 #+END_SRC
 
 ***** Aggresive auto complete
@@ -1178,8 +1172,23 @@ relative line numbers (like Vim)
 #+END_SRC
 
 *** C++
+**** C++11
 #+BEGIN_SRC emacs-lisp
   (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+#+END_SRC
+
+**** irony
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+#+END_SRC
+
+**** headers
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
 
 *** new frame
