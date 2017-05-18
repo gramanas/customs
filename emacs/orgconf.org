@@ -800,6 +800,13 @@ No more highlight!!!
   (setq-default c-basic-offset 4)
 #+END_SRC
 
+**** Qt-keywords
+#+BEGIN_SRC emacs-lisp
+  (font-lock-add-keywords 
+   'c++-mode
+   '(("emit" . font-lock-keyword-face)))
+#+END_SRC
+
 *** Helm
 **** COMMENT noob config
   (require 'helm)
