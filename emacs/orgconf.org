@@ -410,6 +410,11 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
       (save-buffers-kill-emacs t)))
 #+END_SRC
 
+**** isearch at point
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-C-s") 'isearch-forward-symbol-at-point)
+#+END_SRC
+
 *** TeX
 **** Tex Engine to use greek
 #+BEGIN_SRC emacs-lisp 
@@ -942,18 +947,19 @@ No more highlight!!!
 
 ***** backends
 #+BEGIN_SRC emacs-lisp
-    (setq company-backends ())
-    (push 'company-dabbrev company-backends)
-    (push 'company-keywords company-backends)
-    (push 'company-dabbrev-code company-backends) 
-    ; (push 'company-anaconda company-backends)
-    (push 'company-yasnippet company-backends)
-    (push 'company-capf company-backends)
-    (push 'company-files company-backends)
-    (push 'company-clang company-backends)
-    (push 'company-irony company-backends)
-      ; (push 'company-rtags company-backends)
-    ;  (push 'company-semantic company-backends)
+  (setq company-backends ())
+  (push 'company-dabbrev company-backends)
+  (push 'company-keywords company-backends)
+  (push 'company-dabbrev-code company-backends) 
+; (push 'company-anaconda company-backends)
+  (push 'company-yasnippet company-backends)
+  (push 'company-capf company-backends)
+  (push 'company-files company-backends)
+  (push 'company-edbi company-backends)
+  (push 'company-clang company-backends)
+  (push 'company-irony company-backends)
+; (push 'company-rtags company-backends)
+; (push 'company-semantic company-backends)
 #+END_SRC
 
 ***** Aggresive auto complete
