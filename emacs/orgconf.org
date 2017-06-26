@@ -187,7 +187,7 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 #+END_SRC
 
 **** Highlight current line
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (global-hl-line-mode t)
 #+END_SRC
 
@@ -438,16 +438,12 @@ Tangle is set to NO since I dont want to check every time I start emacs or emacs
 
 **** Tex-view program selection
 #+BEGIN_SRC emacs-lisp 
-  (setq
-   TeX-view-program-selection
-   (quote
-    (((output-dvi has-no-display-manager)
-      "dvi2tty")
-     ((output-dvi style-pstricks)
-      "dvips and gv")
-     (output-dvi "xdvi")
-     (output-pdf "Zathura")
-     (output-html "xdg-open"))))
+  (pdf-tools-install)
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+
+  ;; Update PDF buffers after successful LaTeX runs
+  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+             #'TeX-revert-document-buffer)
 #+END_SRC
 
 *** file to mode asociation
@@ -544,6 +540,12 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 #+END_SRC
 
 ** Package Configurations
+*** evil
+#+BEGIN_SRC emacs-lisp     
+  (require 'evil)
+  (evil-mode 1)
+#+END_SRC
+
 *** smart-mode-line
 #+BEGIN_SRC emacs-lisp
   (setq sml/no-confirm-load-theme t)
@@ -596,9 +598,6 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
   (modalka-define-kbd "8" "C-8")
   (modalka-define-kbd "9" "C-9")
 #+END_SRC
-
-#+RESULTS:
-: modalka-translation
 
 *** Org-Mode
 **** Display Settings
@@ -1190,6 +1189,14 @@ relative line numbers (like Vim)
   (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
 #+END_SRC
 
+**** whitespace
+#+BEGIN_SRC emacs-lisp
+  (defun my-whitespace ()
+    (setq show-trailing-whitespace t))
+
+  (add-hook 'c++-mode-hook 'my-whitespace)
+#+END_SRC
+
 **** irony
 #+BEGIN_SRC emacs-lisp
   (add-hook 'c++-mode-hook 'irony-mode)
@@ -1197,6 +1204,9 @@ relative line numbers (like Vim)
   (add-hook 'objc-mode-hook 'irony-mode)
 
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+END_SRC
 
 **** headers
@@ -1218,3 +1228,4 @@ relative line numbers (like Vim)
 | Global | C-x k     | Kill buffer |
 | Global | C-c C-c s | Sudoedit    |
 |        |           |             |
+
