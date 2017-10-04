@@ -4,8 +4,28 @@
 
 #PS1='\u@\h [\W]\$ '
 export PS1="\[$(tput setaf 6)\]┌─ \[$(tput bold)\]\[$(tput setaf 6)\]\A \[$(tput setaf 2)\]\[$(tput setaf 3)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\][ \w ]\[$(tput setaf 2)\]\[$(tput setaf 4)\] \n\[$(tput setaf 6)\]└──► \$ \[$(tput sgr0)\]"
+
+export PATH=$PATH:/home/gramanas/.gem/ruby/2.4.0/bin
+
+# function prompt_right() {
+#   echo -e "\[$(tput setaf 6)\][\\\A]"
+# }
+
+# function prompt_left() {
+#   echo -e "\[$(tput setaf 6)\]┌─ \[$(tput bold)\]\[$(tput setaf 6)\]\[$(tput setaf 2)\]\[$(tput setaf 3)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\][ \w ]\[$(tput setaf 2)\]\[$(tput setaf 4)\] \n\[$(tput setaf 6)\]└──► \$ \[$(tput sgr0)\]"
+# }
+
+# function prompt() {
+#     compensate=10
+#     PS1=$(printf "%*s\r%s" "$(($(tput cols)+${compensate}))" "$(prompt_right)" "$(prompt_left)")
+# }
+# PROMPT_COMMAND=prompt
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
+
+# comma command
+[[ -r "/usr/share/commacd/commacd.bash" ]] && source /usr/share/commacd/commacd.bash
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -16,7 +36,7 @@ shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
-HISTFILESIZE=2000
+HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -31,10 +51,6 @@ if ! shopt -oq posix; then
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
-fi
-
-if [ -x /usr/bin/mint-fortune ]; then
-     /usr/bin/mint-fortune
 fi
 
 # Map Ctrl-S to sth usefull other than XOFF (interrupt data flow).
@@ -55,12 +71,17 @@ alias egrep='egrep --color=auto'
 alias ls='ls --color=auto'
 alias l='ls -lah --color=auto'
 #alias edae='GTK_THEME=Adwaita:dark emacs --daemon'
-alias edae='emacs --daemon'
+#alias edae='emacs --daemon'
+alias eon='systemctl --user start emacs'
+alias eoff='systemctl --user stop emacs'
 alias e='emacsclient -t'
 alias eg='emacsclient -c'
-
+alias gC='cd /home/gramanas/Code'
 alias pacman='pacman --color auto'
+alias m='ncmpcpp'
 
 # Variables
 export VISUAL='emacsclient -a "" -t'
 export EDITOR="$VISUAL"
+export BROWSER="chromium"
+export WINEDEBUG=-all

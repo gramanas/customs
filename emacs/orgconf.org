@@ -2,8 +2,8 @@
 ** General
 *** Trivial Stuff
 #+BEGIN_SRC emacs-lisp
-  (setq default-input-method "greek")  
-  (semantic-mode 1)
+  (setq default-input-method "greek")
+  (semantic-mode 0)
   (menu-bar-mode -1)
   (column-number-mode t)
   (global-linum-mode -1)
@@ -544,8 +544,8 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 ** Package Configurations
 *** evil
 #+BEGIN_SRC emacs-lisp     
-  (require 'evil)
-  (evil-mode 1)
+;;  (require 'evil)
+;;  (evil-mode 1)
 #+END_SRC
 
 *** smart-mode-line
@@ -801,6 +801,14 @@ No more highlight!!!
   (setq sp-highlight-wrap-tag-overlay nil)
 #+END_SRC
 
+*** edit-server
+edit (it's all text)
+for chrome's edit with emacs addon
+#+BEGIN_SRC emacs-lisp
+;;  (require 'edit-server)
+;;  (edit-server-start)
+#+END_SRC
+
 *** C/C++
 #+BEGIN_SRC emacs-lisp
   (setq-default c-basic-offset 4)
@@ -910,15 +918,12 @@ No more highlight!!!
 *** rtags
 **** init
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/elpa/rtags/")
-  (require 'rtags)
-
-  (require 'rtags-helm)
   (setq rtags-use-helm t)
 #+END_SRC
 
 **** keybindings
 #+BEGIN_SRC emacs-lisp
+  (require 'cc-mode)
   (define-key c++-mode-map (kbd "M-.") (function rtags-find-symbol-at-point))
   (define-key c++-mode-map (kbd "M-,") (function rtags-find-references-at-point))
   (define-key c++-mode-map (kbd "M-[") (function rtags-location-stack-back))
@@ -942,8 +947,8 @@ No more highlight!!!
   (add-to-list 'load-path "~/.emacs.d/elpa/company-20160829.1206")
   (require 'company)
   (add-hook 'after-init-hook 'global-company-mode)
-  (require 'company-rtags)
-  (setq rtags-completions-enabled t)
+  ;(require 'company-rtags)
+  ;(setq rtags-completions-enabled t)
 #+END_SRC
 
 ***** backends
@@ -1056,6 +1061,11 @@ No more highlight!!!
   (global-set-key (kbd "M-p") 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   (setq aw-background nil)
+#+END_SRC
+
+*** undo-tree
+#+BEGIN_SRC emacs-lisp
+     (global-undo-tree-mode)
 #+END_SRC
 
 *** avy
@@ -1205,7 +1215,8 @@ relative line numbers (like Vim)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
 
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'c++-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
 
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
@@ -1216,6 +1227,20 @@ relative line numbers (like Vim)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
 
+**** indentation
+#+BEGIN_SRC emacs-lisp
+  (defun my-c-indentation-hook ()
+    (c-set-offset 'arglist-intro '*)
+    (c-set-offset 'access-label '/)
+    )
+  (add-hook 'c++-mode-hook 'my-c-indentation-hook)
+#+END_SRC
+
+**** scroll bar
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c++-mode-hook 'scroll-bar-mode)
+#+END_SRC
+
 *** new frame
 #+BEGIN_SRC emacs-lisp
   (defun my-frame-setup ()
@@ -1223,8 +1248,8 @@ relative line numbers (like Vim)
 
 ;  (setq after-make-frame-functions 'my-frame-setup)
 #+END_SRC
-
 * Key Bindings
+
 | Mode   | kbd       | action      |
 |--------+-----------+-------------|
 | Global | C-x k     | Kill buffer |
