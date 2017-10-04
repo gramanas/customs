@@ -19,45 +19,58 @@ folder-hook 'webmail/' 'source ~/.mutt/account.webmail'
 set move = no
 #set imap_keepalive = 900
 
-color hdrdefault cyan default
-color attachment yellow default
 
-color header brightyellow default "From: "
-color header brightyellow default "Subject: "
-color header brightyellow default "Date: "
+# Palette for use with the Linux console.  Black background.
 
-color quoted green default
+color hdrdefault white black
+color header cyan default "From: "
+color header red default "To: "
+color header red default "Cc: "
+color header red default "Bcc: "
+color header green default "Subject: "
+color header green default "Date: "
+
+color quoted blue default
 color quoted1 cyan default
-color quoted2 green default
+color quoted2 blue default
 color quoted3 cyan default
 
-# error messages
-color error     red             default
-# message  informational messages
-color message   white           default
-# indicator for the "current message"
-color indicator white           red
-# status lines in the folder index sed for the mini-help line
-color status    white           blue
-# the "tree" display of threads within the folder index
-color tree      red             default
-# search matches found with search within the internal pager
-color search    white           blue
-# The markers indicate a wrapped line hen showing messages with looong lines
-color markers   red             default
+color signature brightblue black
+color attachment yellow black
 
-color index     yellow default  '~O'
-color index     yellow default  '~N'
-# Flagged Messages are important!
-color index     brightred       default '~F'
-# Deleted Mails - use dark color as these are already "dealt with"
-color index     blue default    '~D'
+color prompt brightmagenta black
+color message brightred black
+color error brightred black
+color indicator white red
+color status black white
+color tree cyan black
+color normal white black
+color markers red black
+color search white black
+color tilde brightmagenta black
+color index blue black "~F"
+color index red black "~N|~O"
+
+color index_date yellow black
+color index_author magenta black ".*"
+color index_author white red "arch-announce@archlinux.org"
+
+color sidebar_new red black
 
 
 set sort=threads
 set sort_aux=last-date-received
 
 set editor='$EDITOR'
+
+set skip_quoted_offset = 3
+
+set date_format="%y%m%d %T"
+# %C is count
+# %c is size
+set index_format="%d | %-10.10F | {%Z} %s" 
+
+set sleep_time = 0
 
 # set folder=~/.mail/gmail/
 # set spoolfile=+.Inbox
@@ -95,25 +108,7 @@ macro attach 'V' "<pipe-entry>cat >~/.mutt/cache/mail.html && firefox ~/.mutt/ca
 
 set pager_index_lines=6
 
-mailboxes "+## gmail ######################"\
-	  +.Inbox\
-	  +.Fotomada\
-	  +.Weddings\
-	  +.arch\
-	  +.emacs\
-	  +.TeX_live\
-	  +.Mixxx\
-          +.idm\
-	  +.Diktyosi_thess\
-	  +.AutoCsd\
-	  +.sent\
-	  +.drafts\
-	  +.trash\
-	  "+## webmail\ ####################"\
-	  ~/.mail/webmail/Inbox\
-	  ~/.mail/webmail/sent-mail\
-	  ~/.mail/webmail/Drafts
-
+source ~/.mutt/mailboxrc
 set fast_reply=yes
 set include=yes
 
@@ -188,7 +183,7 @@ bind index \Cs sidebar-next
 bind pager \Cs sidebar-next
 
 # # Open the highlighted mailbox
-bind index,pager \CO sidebar-open
+bind index,pager \Cd sidebar-open
 
 # bind index <space> sidebar-open
 
@@ -202,12 +197,17 @@ bind index,pager \CO sidebar-open
 
 # # Move the highlight to the previous mailbox containing new, or flagged,
 # # mail.
-bind index,pager <F5> sidebar-prev-new
+bind index,pager <F1> sidebar-prev-new
 
 # # Move the highlight to the next mailbox containing new, or flagged, mail.
-bind index,pager <F6> sidebar-next-new
+bind index,pager <F2> sidebar-next-new
 
 # # Toggle the visibility of the Sidebar.
 bind index,pager b sidebar-toggle-visible
 
 # ####################
+
+set nm_default_uri = "notmuch:///home/gramanas/.mail"
+
+macro index \\\\ "<vfolder-from-query>" "Search mailbox"
+bind index,pager + entire-thread
