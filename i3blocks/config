@@ -28,19 +28,13 @@ command=/usr/lib/i3blocks/$BLOCK_NAME
 separator_block_width=10
 markup=none
 
+[mympdinfo]
+interval=1
+
 #mail
 [mail]
 label=
 interval=60
-
-# Generic media player support
-#
-# This displays "ARTIST - SONG" if a music is playing.
-# Supported players are: spotify, vlc, audacious, xmms2, mplayer, and others.
-[mediaplayer]
-#instance=cmus
-interval=1
-signal=10
 
 # Volume indicator
 [myvol]
@@ -168,6 +162,8 @@ interval=3
 #interval=5
 #seperator=true
 
+[myWallpaper]
+interval=600
 # Key indicators
 #
 # Add the following bindings to i3 config file:
