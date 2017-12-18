@@ -77,7 +77,7 @@ set sleep_time = 0
 
 set mbox_type=Maildir
 set folder=$HOME/.mail/gmail
-set spoolfile=+.Inbox
+set spoolfile=+Inbox
 set header_cache=~/.mutt/cache
 
 # bind index,pager ^? previous-line
