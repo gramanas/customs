@@ -120,7 +120,8 @@ bar {
             binding_mode       #2f343a #900000 #ffffff
 	    }
 	position top
-	font xft:Source Code Pro 11px
+#	font xft:Source Code Pro 11px
+	font xft:Source Code Pro 15px
 #        font xft:DejaVu Sans 11px
         status_command i3blocks -c /home/gramanas/.config/i3blocks/config
 }
