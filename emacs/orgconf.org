@@ -188,6 +188,8 @@ other #+END_SRC
 ;  (set-frame-font "Source Code Pro 10")
 #+END_SRC
 
+#+RESULTS:
+
 **** Highlight current line
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode t)
@@ -548,6 +550,19 @@ Set mail mode for mutt files and replace C-x # witn C-c C-c
 ;;  (evil-mode 1)
 #+END_SRC
 
+*** mu4e
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+  (require 'mu4e)
+
+(setq
+  mu4e-maildir       "~/.mail"   ;; top-level Maildir
+  mu4e-sent-folder   "/gmail/sent"       ;; folder for sent messages
+  mu4e-drafts-folder "/gmail/drafts"     ;; unfinished messages
+  mu4e-trash-folder  "/gmail/trash"      ;; trashed messages
+  mu4e-refile-folder "/gmail/drafts")
+#+END_SRC
+
 *** smart-mode-line
 #+BEGIN_SRC emacs-lisp
   (setq sml/no-confirm-load-theme t)
@@ -667,7 +682,7 @@ https://lists.gnu.org/archive/html/emacs-orgmode/2014-09/msg00777.html
     \\usepackage[cm-default]{fontspec}
     \\usepackage{xunicode}
     \\usepackage{xltxtra}
-    \\usepackage{xgreek}
+    %\\usepackage{xgreek} %if I want greek (Periexomena, sxhma ktl)
     \\setmainfont[Mapping=tex-text]{GFS Didot}
     \\setmonofont[Mapping=tex-text]{Source Code Pro}
   \\definecolor{mycomment}{HTML}{7A7A7A}
@@ -918,16 +933,16 @@ for chrome's edit with emacs addon
 *** rtags
 **** init
 #+BEGIN_SRC emacs-lisp
-  (setq rtags-use-helm t)
+;;  (setq rtags-use-helm t)
 #+END_SRC
 
 **** keybindings
 #+BEGIN_SRC emacs-lisp
-  (require 'cc-mode)
-  (define-key c++-mode-map (kbd "M-.") (function rtags-find-symbol-at-point))
-  (define-key c++-mode-map (kbd "M-,") (function rtags-find-references-at-point))
-  (define-key c++-mode-map (kbd "M-[") (function rtags-location-stack-back))
-  (define-key c++-mode-map (kbd "M-]") (function rtags-location-stack-forward))
+;;  (require 'cc-mode)
+;;  (define-key c++-mode-map (kbd "M-.") (function rtags-find-symbol-at-point))
+;;  (define-key c++-mode-map (kbd "M-,") (function rtags-find-references-at-point))
+;;  (define-key c++-mode-map (kbd "M-[") (function rtags-location-stack-back))
+;;  (define-key c++-mode-map (kbd "M-]") (function rtags-location-stack-forward))
 #+END_SRC
 
 *** gdb
@@ -961,7 +976,7 @@ for chrome's edit with emacs addon
   (push 'company-yasnippet company-backends)
   (push 'company-capf company-backends)
   (push 'company-files company-backends)
-  (push 'company-edbi company-backends)
+; (push 'company-edbi company-backends)
   (push 'company-clang company-backends)
   (push 'company-irony company-backends)
 ; (push 'company-rtags company-backends)
@@ -1216,7 +1231,7 @@ relative line numbers (like Vim)
   (add-hook 'objc-mode-hook 'irony-mode)
 
   (add-hook 'c++-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+;;  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
 
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
