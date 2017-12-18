@@ -2,6 +2,14 @@
 # ~/.bashrc
 #
 
+# auto-start ssh-agent (https://wiki.archlinux.org/index.php/SSH_keys#ssh-agent)
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent > ~/.ssh/ssh-agent-thing
+fi
+if [[ "$SSH_AGENT_PID" == "" ]]; then
+    eval "$(<~/.ssh/ssh-agent-thing)"
+fi
+
 #PS1='\u@\h [\W]\$ '
 export PS1="\[$(tput setaf 6)\]┌─ \[$(tput bold)\]\[$(tput setaf 6)\]\A \[$(tput setaf 2)\]\[$(tput setaf 3)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\][ \w ]\[$(tput setaf 2)\]\[$(tput setaf 4)\] \n\[$(tput setaf 6)\]└──► \$ \[$(tput sgr0)\]"
 
@@ -79,6 +87,7 @@ alias eg='emacsclient -c'
 alias gC='cd /home/gramanas/Code'
 alias pacman='pacman --color auto'
 alias m='ncmpcpp'
+alias mutt='neomutt'
 
 # Variables
 export VISUAL='emacsclient -a "" -t'
