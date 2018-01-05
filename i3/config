@@ -14,7 +14,7 @@
 ###########
 
 set $mod Mod4
-set $term urxvt-server-client # termina
+set $term urxvt-server-client
 
 new_window normal
 hide_edge_borders none
@@ -60,7 +60,7 @@ mode "$mode_launcher"{
      bindsym f exec firefox; mode "default"
      bindsym c exec chromium; mode "default"
      bindsym e exec emacsg; mode "default"
-     bindsym t exec urxvt-server-client -e tmux; mode "default"
+     bindsym t exec $term -e tmux; mode "default"
      
      bindsym control+g mode "default"
      bindsym Escape mode "default"
@@ -130,15 +130,12 @@ bar {
 # KEYBINDINGS #
 ###############
 
-bindsym $mod+Return exec --no-startup-id urxvt-server-client # terminal
+bindsym $mod+Return exec --no-startup-id $term # terminal
 bindsym $mod+Shift+q kill
-bindsym $mod+r exec --no-startup-id urxvt-server-client -title ranger_p -e "ranger"
-for_window [title="ranger"] floating toggle
-for_window [title="ranger"] resize grow height 150 px
-for_window [title="ranger"] resize grow width 200 px
-for_window [title="ranger"] move position center
-bindsym $mod+d exec --no-startup-id dmenu_run -nb "#111111" -nf "#ffffff" -sb "#111111" -sf "#ff1170" -fn "Source Code Pro-9" -i
+#bindsym $mod+d exec --no-startup-id dmenu_run -nb "#111111" -nf "#ffffff" -sb "#111111" -sf "#ff1170" -fn "Source Code Pro-9" -i
+bindsym $mod+d exec --no-startup-id rofi -show run
 #bindsym $mod+d exec rofi -show run -font "Source Code Pro 14" -fg "#505050" -bg "#FFFFFF" -hlfg "#ffb964" -hlbg "#000000" -width 30 -lines 5 -padding 20 -separator-style none -hide-scrollbar -bw 4 -bc "#111111"
+bindsym $mod+Tab exec --no-startup-id rofi -show window
 #bindsym $mod+d exec --no-startup-id rofi -show run
 
 # change focus EMACS
@@ -224,7 +221,7 @@ bindsym $mod+Shift+0 move container to workspace 0
 # reload the configuration file
 # bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+z restart
 
 # sound control
 bindsym XF86AudioRaiseVolume exec ponymix increase 5; exec pkill -SIGRTMIN+10 i3blocks # increase sound volume
@@ -247,25 +244,27 @@ bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id $mpc seek +00:00:05; exe
 bindsym Shift+XF86AudioLowerVolume exec --no-startup-id $mpc seek -00:00:05; exec pkill -SIGRTMIN+10 i3blocks # seek prev
 
 # extras
+exec --no-startup-id $term -T "genius calculator" -e genius
 bindsym XF86Calculator [title="genius calculator"] scratchpad show
-bindsym $mod+XF86Calculator exec urxvt-server-client -T "genius calculator" -e genius
-exec --no-startup-id urxvt-server-client -T "genius calculator" -e genius
+bindsym $mod+XF86Calculator exec $term -T "genius calculator" -e genius
 for_window [title="genius calculator"] move scratchpad
 for_window [title="genius calculator"] resize shrink height 10 px
-for_window [title="genius calculator"] resize shrink width 300 px 
+for_window [title="genius calculator"] resize shrink width 30 px 
 
-
-
+exec $term -title spad -e sh -c "tmux attach -t spad || tmux new-session -s spad"
 bindsym Pause [title="spad"] scratchpad show 
-bindsym $mod+Pause exec urxvt-server-client -title spad -e sh -c "tmux attach -t spad || tmux new-session -s spad"
-exec urxvt-server-client -title spad -e sh -c "tmux attach -t spad || tmux new-session -s spad"
-#exec_always flock -w1 ~/.config/i3/scratchpad/lockfile ~/.config/i3/scratchpad/perpetual_terminal.sh
+bindsym $mod+Pause exec --no-startup-id $term -title spad -e sh -c "tmux attach -t spad || tmux new-session -s spad"
 for_window [title="spad"] move scratchpad
 
-# bindsym $mod+Mod2+KP_1 title_format move scratchpad
-# bindsym $mod+Mod2+KP_2 move scratchpad
-# bindsym $mod+Mod2+KP_3 move scratchpad
+bindsym $mod+m [title="music"] scratchpad show
+bindsym $mod+Shift+m exec --no-startup-id $term -title music -e sh -c "tmux attach -t music || tmux new-session -s music -d ncmpcpp"
+for_window [title="music"] move scratchpad
 
+bindsym $mod+r [title="ranger"] scratchpad show
+bindsym $mod+Shift+r exec --no-startup-id $term -title ranger -e sh -c "tmux attach -t ranger || tmux new-session -s ranger -d ranger"
+for_window [title="ranger"] move scratchpad
+for_window [title="ranger"] resize grow height 150 px
+for_window [title="ranger"] resize grow width 200 px
+# bindsym $mod+r exec --no-startup-id $term -title ranger_p -e "ranger"
+# for_window [title="ranger"] floating toggle
 
-
-# bindsym $mod+Mod2+KP_3 scratchpad show
