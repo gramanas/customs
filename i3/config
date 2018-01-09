@@ -244,6 +244,9 @@ bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id $mpc seek +00:00:05; exe
 bindsym Shift+XF86AudioLowerVolume exec --no-startup-id $mpc seek -00:00:05; exec pkill -SIGRTMIN+10 i3blocks # seek prev
 
 # extras
+#//bindsym Scroll_Lock scratchpad show
+#bindsym $mod+Scroll_Lock move scratchpad
+
 exec --no-startup-id $term -T "genius calculator" -e genius
 bindsym XF86Calculator [title="genius calculator"] scratchpad show
 bindsym $mod+XF86Calculator exec $term -T "genius calculator" -e genius
@@ -259,12 +262,13 @@ for_window [title="spad"] move scratchpad
 bindsym $mod+m [title="music"] scratchpad show
 bindsym $mod+Shift+m exec --no-startup-id $term -title music -e sh -c "tmux attach -t music || tmux new-session -s music -d ncmpcpp"
 for_window [title="music"] move scratchpad
+for_window [title="music"] resize grow height 350 px
+for_window [title="music"] resize grow width 700 px
 
-bindsym $mod+r [title="ranger"] scratchpad show
-bindsym $mod+Shift+r exec --no-startup-id $term -title ranger -e sh -c "tmux attach -t ranger || tmux new-session -s ranger -d ranger"
-for_window [title="ranger"] move scratchpad
-for_window [title="ranger"] resize grow height 150 px
-for_window [title="ranger"] resize grow width 200 px
+bindsym $mod+r [title="ranger-session"] scratchpad show
+bindsym $mod+Shift+r exec --no-startup-id $term -T "ranger-session" -e sh -c "tmux attach -t ranger-session || tmux new-session -s ranger-session -d ranger"
+for_window [title="ranger-session"] move scratchpad
+for_window [title="ranger-session"] resize grow height 150 px
+for_window [title="ranger-session"] resize grow width 200 px
 # bindsym $mod+r exec --no-startup-id $term -title ranger_p -e "ranger"
 # for_window [title="ranger"] floating toggle
-
