@@ -1,0 +1,13 @@
+mpd_host = "localhost"
+mpd_port = "5555"
+mpd_music_dir = "/home/gramanas/Music"
+visualizer_fifo_path = "/home/gramanas/mpd.fifo"
+visualizer_output_name = "FIFO"
+visualizer_sync_interval = "10"
+visualizer_type = "spectrum" (spectrum/wave)
+visualizer_look = "●●"
+user_interface = alternative
+follow_now_playing_lyrics = yes
+screen_switcher_mode = previous
+startup_screen = media_library
+
